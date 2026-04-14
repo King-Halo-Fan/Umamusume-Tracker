@@ -1,7 +1,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg-primary: #F9F6EE;
+    --bg-prim: #F9F6EE;
     --text-prim: ##0D0D0D;
     --border-light: rgba(0,0,0,0.12);
     --border-mid: rgba(0,0,0,0.22);
@@ -15,9 +15,7 @@
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg-primary: #F9F6EE;
-      --bg-secondary: #2a2a28;
-      --bg-tertiary: #242422;
+      --bg-prim: #F9F6EE;
       --text-prim: ##0D0D0D;
       --border-light: rgba(255,255,255,0.1);
       --border-mid: rgba(255,255,255,0.2);
@@ -31,8 +29,8 @@ body {
   background-size: 100% 100%;
 }
   .container { max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-primary);}
-  .subtitle { font-size: 13px; margin-bottom: 1.5rem; var(--bg-primary);}
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-prim);}
+  .subtitle { font-size: 13px; margin-bottom: 1.5rem; var(--bg-prim);}
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
   .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; }
@@ -44,14 +42,14 @@ body {
   .search-row input {
     width: 100%; padding: 8px 12px; font-size: 14px;
     border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: var(--bg-primary); color: var(--text-prim); font-family: inherit;
+    background: var(--bg-prim); color: var(--text-prim); font-family: inherit;
     outline: none;
   }
   .search-row input:focus { border-color: var(--border-mid); }
 
   .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
   .char-card {
-    background: var(--bg-primary); border: 0.5px solid var(--border-light);
+    background: var(--bg-prim); border: 0.5px solid var(--border-light);
     border-radius: var(--radius-lg); padding: 12px; cursor: pointer;
     transition: border-color 0.15s;
   }
@@ -112,7 +110,7 @@ body {
   .race-row {
     display: flex; align-items: center; gap: 10px; padding: 8px 10px;
     border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: var(--bg-primary);
+    background: var(--bg-prim);
   }
   .race-grade { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
   .g1 { background: #FAECE7; color: #993C1D; }
