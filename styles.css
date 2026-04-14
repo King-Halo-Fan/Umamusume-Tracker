@@ -1,11 +1,3 @@
-body {
-  background-image: url('Icons/Background.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
-}
-
-
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -33,13 +25,13 @@ body {
       --border-mid: rgba(255,255,255,0.2);
     }
   }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    min-height: 100vh;
-    padding: 1.5rem 1rem;
-  }
+body {
+  font-family: "Courier New", monospace;
+  background-image: url('Icons/Background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
   .container { max-width: 900px; margin: 0 auto; }
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; }
   .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; }
