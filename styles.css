@@ -33,7 +33,7 @@ body {
   .subtitle { font-size: 13px; margin-bottom: 1.5rem; var(--bg-prim);}
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; }
+  .stat-card { background: var(--bg-prim); border-radius: var(--radius-md); padding: 12px 14px; }
   .stat-label { font-size: 12px; color: var(--text-prim); margin-bottom: 4px; }
   .stat-val { font-size: 22px; font-weight: 500; }
   .stat-sub { font-size: 11px; color: var(--text-prim); margin-top: 2px; }
@@ -79,7 +79,7 @@ body {
     border-radius: var(--radius-md); padding: 6px 14px; font-size: 13px;
     cursor: pointer; color: var(--text-prim); font-family: inherit; margin-bottom: 1rem;
   }
-  .back-btn:hover { background: var(--bg-secondary); }
+  .back-btn:hover { background: var(--bg-prim); }
   .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
   .detail-avatar {
     width: 48px; height: 48px; border-radius: 50%;
@@ -103,7 +103,7 @@ body {
     display: flex; justify-content: space-between;
   }
   .section-pct { font-size: 11px; color: var(--text-prim); }
-  .progress-bar-wrap { height: 5px; background: var(--bg-secondary); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; }
+  .progress-bar-wrap { height: 5px; background: var(--bg-prim); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; }
   .progress-bar { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.3s; }
 
   .race-list { display: flex; flex-direction: column; gap: 6px; }
