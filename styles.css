@@ -33,7 +33,7 @@ body {
   .subtitle { font-size: 13px; margin-bottom: 1.5rem; var(--bg-prim);}
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat-card { border-radius: var(--radius-md); padding: 12px 14px; }
+  .stat-card { border-radius: var(--radius-md); padding: 12px 14px;  var(--bg-prim);}
   .stat-label { font-size: 12px; color: var(--text-prim); margin-bottom: 4px; }
   .stat-val { font-size: 22px; font-weight: 500; }
   .stat-sub { font-size: 11px; color: var(--text-prim); margin-top: 2px; }
