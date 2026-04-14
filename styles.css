@@ -1,9 +1,6 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --text-primary: #1a1a18;
-    --text-secondary: #5f5e5a;
-    --text-tertiary: #888780;
     --border-light: rgba(0,0,0,0.12);
     --border-mid: rgba(0,0,0,0.22);
     --radius-md: 8px;
@@ -15,10 +12,10 @@
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg-primary: #1e1e1c;
+      --bg-primary: #F9F6EE;
       --bg-secondary: #2a2a28;
       --bg-tertiary: #242422;
-      --text-primary: #f0ede6;
+      --text-primary: ##0D0D0D;
       --text-secondary: #b4b2a9;
       --text-tertiary: #888780;
       --border-light: rgba(255,255,255,0.1);
