@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Umamusume Pretty Derby Tracker</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --bg-tertiary: #eeede8;
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #888780;
+    --border-light: rgba(0,0,0,0.12);
+    --border-mid: rgba(0,0,0,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-dark: #085041;
+    --teal-mid: #0F6E56;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a28;
+      --bg-tertiary: #242422;
+      --text-primary: #f0ede6;
+      --text-secondary: #b4b2a9;
+      --text-tertiary: #888780;
+      --border-light: rgba(255,255,255,0.1);
+      --border-mid: rgba(255,255,255,0.2);
+    }
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+
+  .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .stat-val { font-size: 22px; font-weight: 500; }
+  .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+  .search-row { margin-bottom: 1rem; }
+  .search-row input {
+    width: 100%; padding: 8px 12px; font-size: 14px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    background: var(--bg-primary); color: var(--text-primary); font-family: inherit;
+    outline: none;
+  }
+  .search-row input:focus { border-color: var(--border-mid); }
+
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .char-card {
+    background: var(--bg-primary); border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg); padding: 12px; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .char-card:hover { border-color: var(--border-mid); }
+  .char-card.owned { border-color: var(--teal); background: var(--teal-light); }
+  .char-card.owned .char-name { color: var(--teal-dark); }
+  .char-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .char-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 500; flex-shrink: 0;
+  }
+  .char-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .char-wins { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .own-toggle {
+    width: 100%; padding: 5px; font-size: 11px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    background: transparent; cursor: pointer; color: var(--text-secondary); font-family: inherit;
+    margin-top: 8px;
+  }
+  .char-card.owned .own-toggle { background: var(--teal-mid); color: #E1F5EE; border-color: var(--teal-mid); }
+
+  /* Detail view */
+  .detail-view { display: none; }
+  .back-btn {
+    background: transparent; border: 0.5px solid var(--border-mid);
+    border-radius: var(--radius-md); padding: 6px 14px; font-size: 13px;
+    cursor: pointer; color: var(--text-secondary); font-family: inherit; margin-bottom: 1rem;
+  }
+  .back-btn:hover { background: var(--bg-secondary); }
+  .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
+  .detail-avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 500; flex-shrink: 0;
+  }
+  .detail-name { font-size: 17px; font-weight: 500; }
+  .detail-wins-sub { font-size: 12px; color: var(--text-secondary); }
+  .own-btn-detail {
+    margin-left: auto; padding: 6px 14px; font-size: 12px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    cursor: pointer; font-family: inherit; background: transparent; color: var(--text-secondary);
+  }
+  .own-btn-detail.owned { background: var(--teal-mid); color: #E1F5EE; border-color: var(--teal-mid); }
+
+  .section { margin-bottom: 1.5rem; }
+  .section-title {
+    font-size: 13px; font-weight: 500; color: var(--text-secondary);
+    margin-bottom: 8px; padding-bottom: 6px;
+    border-bottom: 0.5px solid var(--border-light);
+    display: flex; justify-content: space-between;
+  }
+  .section-pct { font-size: 11px; color: var(--text-tertiary); }
+  .progress-bar-wrap { height: 5px; background: var(--bg-secondary); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; }
+  .progress-bar { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.3s; }
+
+  .race-list { display: flex; flex-direction: column; gap: 6px; }
+  .race-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    background: var(--bg-primary);
+  }
+  .race-grade { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
+  .g1 { background: #FAECE7; color: #993C1D; }
+  .title-badge { background: #EEEDFE; color: #3C3489; }
+  .race-name { flex: 1; font-size: 13px; }
+  .race-check {
+    width: 22px; height: 22px; border-radius: 5px;
+    border: 0.5px solid var(--border-mid); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: transparent; font-size: 12px; font-weight: 500;
+    color: transparent; transition: background 0.1s;
+  }
+  .race-check.won { background: var(--teal); border-color: var(--teal); color: white; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Umamusume Pretty Derby Tracker</h1>
+  <p class="subtitle">Track your characters and their race wins &amp; titles</p>
+
+  <div id="chars-view">
+    <div class="summary-bar">
+      <div class="stat-card">
+        <div class="stat-label">Characters owned</div>
+        <div class="stat-val" id="sum-owned">0</div>
+        <div class="stat-sub" id="sum-owned-sub">of 47 total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total wins logged</div>
+        <div class="stat-val" id="sum-wins">0</div>
+        <div class="stat-sub">across all characters</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">G1 races tracked</div>
+        <div class="stat-val" id="sum-races">0</div>
+        <div class="stat-sub" id="sum-races-sub"></div>
+      </div>
+    </div>
+    <div class="search-row">
+      <input id="search-input" placeholder="Search characters..." />
+    </div>
+    <div class="char-grid" id="char-grid"></div>
+  </div>
+
+  <div class="detail-view" id="detail-view">
+    <button class="back-btn" id="back-btn">← All characters</button>
+    <div class="detail-header">
+      <div class="detail-avatar" id="d-avatar"></div>
+      <div>
+        <div class="detail-name" id="d-name"></div>
+        <div class="detail-wins-sub" id="d-sub"></div>
+      </div>
+      <button class="own-btn-detail" id="d-own-btn"></button>
+    </div>
+    <div id="d-races-section" class="section"></div>
+    <div id="d-titles-section" class="section"></div>
+  </div>
+</div>
+
+<script>
+const CHARS = [
+  {name:"Special Week", color:"#B5D4F4", text:"#0C447C"},
+  {name:"Silence Suzuka", color:"#F4C0D1", text:"#72243E"},
+  {name:"Tokai Teio", color:"#CED0FF", text:"#3C3489"},
+  {name:"Mejiro McQueen", color:"#C0DD97", text:"#3B6D11"},
+  {name:"Gold Ship", color:"#D3D1C7", text:"#444441"},
+  {name:"Vodka", color:"#F5C4B3", text:"#712B13"},
+  {name:"Daiwa Scarlet", color:"#F7C1C1", text:"#791F1F"},
+  {name:"Oguri Cap", color:"#FAC775", text:"#633806"},
+  {name:"El Condor Pasa", color:"#C0DD97", text:"#3B6D11"},
+  {name:"Grass Wonder", color:"#9FE1CB", text:"#085041"},
+  {name:"Seiun Sky", color:"#B5D4F4", text:"#0C447C"},
+  {name:"King Halo", color:"#F4C0D1", text:"#72243E"},
+  {name:"Symboli Rudolf", color:"#D3D1C7", text:"#444441"},
+  {name:"Narita Brian", color:"#F7C1C1", text:"#791F1F"},
+  {name:"Mihono Bourbon", color:"#B5D4F4", text:"#0C447C"},
+  {name:"Rice Shower", color:"#F4C0D1", text:"#72243E"},
+  {name:"Super Creek", color:"#9FE1CB", text:"#085041"},
+  {name:"T.M. Opera O", color:"#FAC775", text:"#633806"},
+  {name:"Biwa Hayahide", color:"#CED0FF", text:"#3C3489"},
+  {name:"Mayano Top Gun", color:"#FAC775", text:"#633806"},
+  {name:"Maruzensky", color:"#F5C4B3", text:"#712B13"},
+  {name:"Fuji Kiseki", color:"#9FE1CB", text:"#085041"},
+  {name:"Agnes Tachyon", color:"#F7C1C1", text:"#791F1F"},
+  {name:"Agnes Digital", color:"#B5D4F4", text:"#0C447C"},
+  {name:"Air Groove", color:"#C0DD97", text:"#3B6D11"},
+  {name:"Fine Motion", color:"#CED0FF", text:"#3C3489"},
+  {name:"Hishi Amazon", color:"#F5C4B3", text:"#712B13"},
+  {name:"Narita Taishin", color:"#D3D1C7", text:"#444441"},
+  {name:"Manhattan Cafe", color:"#CED0FF", text:"#3C3489"},
+  {name:"Eishin Flash", color:"#FAC775", text:"#633806"},
+  {name:"Smart Falcon", color:"#9FE1CB", text:"#085041"},
+  {name:"Curren Chan", color:"#F4C0D1", text:"#72243E"},
+  {name:"Meisho Doto", color:"#B5D4F4", text:"#0C447C"},
+  {name:"Haru Urara", color:"#F5C4B3", text:"#712B13"},
+  {name:"Winning Ticket", color:"#FAC775", text:"#633806"},
+  {name:"Twin Turbo", color:"#F7C1C1", text:"#791F1F"},
+  {name:"Kitasan Black", color:"#D3D1C7", text:"#444441"},
+  {name:"Satono Diamond", color:"#CED0FF", text:"#3C3489"},
+  {name:"Gold City", color:"#C0DD97", text:"#3B6D11"},
+  {name:"Tosen Jordan", color:"#FAC775", text:"#633806"},
+  {name:"Mejiro Dober", color:"#F5C4B3", text:"#712B13"},
+  {name:"Tamamo Cross", color:"#F7C1C1", text:"#791F1F"},
+  {name:"Kawakami Princess", color:"#F4C0D1", text:"#72243E"},
+  {name:"Hishi Akebono", color:"#9FE1CB", text:"#085041"},
+  {name:"Matikane Fukukitaru", color:"#B5D4F4", text:"#0C447C"},
+  {name:"Sakura Chiyono O", color:"#F4C0D1", text:"#72243E"},
+  {name:"Air Messiah", color:"#B5D4F4", text:"#0C447C"},
+];
+
+const G1_RACES = [
+  "Hopeful Stakes","Hanshin Juvenile Fillies","Asahi Hai Futurity Stakes",
+  "Oka Sho","Satsuki Sho","Tenno Sho (Spring)","NHK Mile Cup","Victoria Mile",
+  "Japanese Oaks","Japanese Derby","Yasuda Kinen","Takarazuka Kinen",
+  "Sprinters Stakes","Shuka Sho","Kikuka Sho","Tenno Sho (Autumn)",
+  "Queen Elizabeth II Cup","Mile Championship","Japan Cup","Champions Cup",
+  "Hanshin Juvenile Fillies (Dec)","Arima Kinen","February Stakes",
+  "Takamatsunomiya Kinen","Osaka Hai","Japan Dirt Derby","JBC Classic",
+  "JBC Ladies Classic","Tokyo Daishoten",
+];
+
+const TITLES = [
+  "Classic Triple Crown","Triple Tiara","Senior Spring Triple Crown",
+  "Senior Autumn Triple Crown","Spring & Autumn Tenno Sho","Spring & Autumn Grand Prix",
+  "Spring & Autumn Sprint Champions","Spring & Autumn Mile Champions",
+  "URA Finale Champion","All Comers Victor",
+];
+
+const KEY = "umatrace_v1";
+let data = {};
+try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch {}
+
+let currentChar = null;
+let search = "";
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(data)); } catch {}
+}
+
+function initChar(name) {
+  if (!data[name]) data[name] = { owned: false, races: {}, titles: {} };
+}
+
+function initials(name) {
+  return name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+function getWins(name) {
+  const d = data[name];
+  if (!d) return 0;
+  return Object.values(d.races || {}).filter(Boolean).length + Object.values(d.titles || {}).filter(Boolean).length;
+}
+
+function updateSummary() {
+  const owned = CHARS.filter(c => data[c.name]?.owned).length;
+  const totalWins = CHARS.reduce((a, c) => a + getWins(c.name), 0);
+  document.getElementById("sum-owned").textContent = owned;
+  document.getElementById("sum-owned-sub").textContent = `of ${CHARS.length} total`;
+  document.getElementById("sum-wins").textContent = totalWins;
+  document.getElementById("sum-races").textContent = G1_RACES.length;
+  document.getElementById("sum-races-sub").textContent = `+ ${TITLES.length} titles`;
+}
+
+function renderGrid() {
+  const grid = document.getElementById("char-grid");
+  const q = search.toLowerCase();
+  const filtered = CHARS.filter(c => !q || c.name.toLowerCase().includes(q));
+  grid.innerHTML = filtered.map(c => {
+    const d = data[c.name] || {};
+    const w = getWins(c.name);
+    return `<div class="char-card ${d.owned ? 'owned' : ''}" data-name="${c.name}" tabindex="0">
+      <div class="char-header">
+        <div class="char-avatar" style="background:${c.color};color:${c.text}">${initials(c.name)}</div>
+        <div>
+          <div class="char-name">${c.name}</div>
+          <div class="char-wins">${w} win${w !== 1 ? 's' : ''} logged</div>
+        </div>
+      </div>
+      <button class="own-toggle" data-own="${c.name}">${d.owned ? '✓ Owned' : 'Mark as owned'}</button>
+    </div>`;
+  }).join("");
+
+  grid.querySelectorAll(".char-card").forEach(el => {
+    el.addEventListener("click", e => {
+      if (e.target.dataset.own !== undefined) return;
+      showDetail(el.dataset.name);
+    });
+    el.addEventListener("keydown", e => { if (e.key === "Enter") showDetail(el.dataset.name); });
+  });
+
+  grid.querySelectorAll("[data-own]").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      const name = btn.dataset.own;
+      initChar(name);
+      data[name].owned = !data[name].owned;
+      save();
+      renderGrid();
+      updateSummary();
+    });
+  });
+
+  updateSummary();
+}
+
+function showDetail(name) {
+  currentChar = name;
+  const c = CHARS.find(x => x.name === name);
+  initChar(name);
+
+  document.getElementById("chars-view").style.display = "none";
+  document.getElementById("detail-view").style.display = "block";
+
+  renderDetail(c);
+}
+
+function renderDetail(c) {
+  const d = data[c.name];
+  const raceWins = Object.values(d.races || {}).filter(Boolean).length;
+  const titleWins = Object.values(d.titles || {}).filter(Boolean).length;
+
+  const avatar = document.getElementById("d-avatar");
+  avatar.textContent = initials(c.name);
+  avatar.style.background = c.color;
+  avatar.style.color = c.text;
+
+  document.getElementById("d-name").textContent = c.name;
+  document.getElementById("d-sub").textContent = `${raceWins} G1 wins · ${titleWins} titles`;
+
+  const ownBtn = document.getElementById("d-own-btn");
+  ownBtn.textContent = d.owned ? "✓ Owned" : "Mark as owned";
+  ownBtn.className = "own-btn-detail" + (d.owned ? " owned" : "");
+  ownBtn.onclick = () => {
+    d.owned = !d.owned;
+    save();
+    renderDetail(c);
+    updateSummary();
+  };
+
+  // Races section
+  const rPct = Math.round(raceWins / G1_RACES.length * 100);
+  document.getElementById("d-races-section").innerHTML = `
+    <div class="section-title">G1 races — ${raceWins} / ${G1_RACES.length} <span class="section-pct">${rPct}%</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${rPct}%"></div></div>
+    <div class="race-list">
+      ${G1_RACES.map(r => `
+        <div class="race-row">
+          <span class="race-grade g1">G1</span>
+          <span class="race-name">${r}</span>
+          <div class="race-check ${d.races[r] ? 'won' : ''}" data-race="${r}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r]}">${d.races[r] ? '✓' : ''}</div>
+        </div>`).join("")}
+    </div>`;
+
+  // Titles section
+  const tPct = Math.round(titleWins / TITLES.length * 100);
+  document.getElementById("d-titles-section").innerHTML = `
+    <div class="section-title">Titles — ${titleWins} / ${TITLES.length} <span class="section-pct">${tPct}%</span></div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
+    <div class="race-list">
+      ${TITLES.map(t => `
+        <div class="race-row">
+          <span class="race-grade title-badge">Title</span>
+          <span class="race-name">${t}</span>
+          <div class="race-check ${d.titles[t] ? 'won' : ''}" data-title="${t}" tabindex="0" role="checkbox" aria-checked="${!!d.titles[t]}">${d.titles[t] ? '✓' : ''}</div>
+        </div>`).join("")}
+    </div>`;
+
+  document.querySelectorAll("[data-race]").forEach(el => {
+    const toggle = () => {
+      d.races[el.dataset.race] = !d.races[el.dataset.race];
+      save();
+      renderDetail(c);
+      updateSummary();
+    };
+    el.addEventListener("click", toggle);
+    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") toggle(); });
+  });
+
+  document.querySelectorAll("[data-title]").forEach(el => {
+    const toggle = () => {
+      d.titles[el.dataset.title] = !d.titles[el.dataset.title];
+      save();
+      renderDetail(c);
+      updateSummary();
+    };
+    el.addEventListener("click", toggle);
+    el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") toggle(); });
+  });
+}
+
+document.getElementById("back-btn").addEventListener("click", () => {
+  document.getElementById("detail-view").style.display = "none";
+  document.getElementById("chars-view").style.display = "block";
+  renderGrid();
+});
+
+document.getElementById("search-input").addEventListener("input", e => {
+  search = e.target.value;
+  renderGrid();
+});
+
+renderGrid();
+</script>
+</body>
+</html>
