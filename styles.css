@@ -1,6 +1,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
+    --bg-primary: #F9F6EE;
     --border-light: rgba(0,0,0,0.12);
     --border-mid: rgba(0,0,0,0.22);
     --radius-md: 8px;
@@ -9,6 +10,7 @@
     --teal-light: #E1F5EE;
     --teal-dark: #085041;
     --teal-mid: #0F6E56;
+   
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -30,7 +32,7 @@ body {
   background-size: 100% 100%;
 }
   .container { max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-primary);}
   .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; }
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
