@@ -2,6 +2,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg-primary: #F9F6EE;
+    --text-primary: ##0D0D0D;
     --border-light: rgba(0,0,0,0.12);
     --border-mid: rgba(0,0,0,0.22);
     --radius-md: 8px;
@@ -33,7 +34,7 @@ body {
 }
   .container { max-width: 900px; margin: 0 auto; }
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-primary);}
-  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; }
+  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; var(--bg-primary)}
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
   .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; }
