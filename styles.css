@@ -2,7 +2,7 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg-prim: #F9F6EE;
-    --text-prim: ##0D0D0D;
+    --text-prim: #0D0D0D;
     --border-light: rgba(0,0,0,0.12);
     --border-mid: rgba(0,0,0,0.22);
     --radius-md: 8px;
@@ -27,6 +27,9 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+}
+div {
+ background: var(--bg-prim);
 }
   .container { max-width: 900px; margin: 0 auto; }
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-prim);}
