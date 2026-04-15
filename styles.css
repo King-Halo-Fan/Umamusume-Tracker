@@ -4,7 +4,7 @@
     --bg-prim: #F9F6EE;
     --text-prim: #0D0D0D;
     --border-light: rgba(0,0,0,0.12);
-    --border-mid: rgba(0,0,0,0.22);
+    --border-mid: rgba(0,0,0,0.1);
     --radius-md: 8px;
     --radius-lg: 12px;
     --teal: #1D9E75;
@@ -58,7 +58,7 @@ body {
   .char-card:hover { border-color: var(--border-mid); }
   .char-card.owned { border-color: var(--teal); background: var(--teal-light); }
   .char-card.owned .char-name { color: var(--teal-dark); }
-  .char-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .char-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; background: var(--bg-prim);}
   .char-avatar {
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
