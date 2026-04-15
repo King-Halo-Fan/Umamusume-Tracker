@@ -28,11 +28,9 @@ body {
   background-attachment: fixed;
   background-size: 100% 100%;
 }
-div {
- background: var(--bg-prim);
-}
+
   .container { max-width: 900px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-prim);}
+<!--  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; background: var(--bg-prim);} -->
   .subtitle { font-size: 13px; margin-bottom: 1.5rem; background: var(--bg-prim);}
 
   .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
