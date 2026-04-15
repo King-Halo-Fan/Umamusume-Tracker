@@ -42,7 +42,7 @@ body {
 
   .search-row { margin-bottom: 1rem; }
   .search-row input {
-    width: 100%; padding: 8px 12px; font-size: 14px;
+    width: 100%; padding: 8px 0px; font-size: 14px;
     border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
     background: var(--bg-prim); color: var(--text-prim); font-family: inherit;
     outline: none;
