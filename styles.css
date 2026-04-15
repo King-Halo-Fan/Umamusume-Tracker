@@ -43,7 +43,7 @@ body {
   .search-row { margin-bottom: 1rem; }
   .search-row input {
     width: 100%; padding: 8px 0px; font-size: 14px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
     background: var(--bg-prim); color: var(--text-prim); font-family: inherit;
     outline: none;
   }
@@ -51,7 +51,7 @@ body {
 
   .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
   .char-card {
-    background: var(--bg-prim); border: 0.5px solid var(--border-light);
+    background: var(--bg-prim); border: 0.5px solid var(--border-mid);
     border-radius: var(--radius-lg); padding: 12px; cursor: pointer;
     transition: border-color 0.15s;
   }
@@ -68,7 +68,7 @@ body {
   .char-wins { font-size: 11px; color: var(--text-prim); margin-top: 2px; }
   .own-toggle {
     width: 100%; padding: 5px; font-size: 11px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
     background: transparent; cursor: pointer; color: var(--text-prim); font-family: inherit;
     margin-top: 8px;
   }
@@ -77,7 +77,7 @@ body {
   /* Detail view */
   .detail-view { display: none; }
   .back-btn {
-    background: transparent; border: 0.5px solid var(--border-mid);
+    background: var(--bg-prim); border: 0.5px solid var(--border-mid);
     border-radius: var(--radius-md); padding: 6px 14px; font-size: 13px;
     cursor: pointer; color: var(--text-prim); font-family: inherit; margin-bottom: 1rem;
   }
@@ -92,8 +92,8 @@ body {
   .detail-wins-sub { font-size: 12px; color: var(--text-prim); }
   .own-btn-detail {
     margin-left: auto; padding: 6px 14px; font-size: 12px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    cursor: pointer; font-family: inherit; background: transparent; color: var(--text-prim);
+    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
+    cursor: pointer; font-family: inherit; background: var(--bg-prim); color: var(--text-prim);
   }
   .own-btn-detail.owned { background: var(--teal-mid); color: #E1F5EE; border-color: var(--teal-mid); }
 
@@ -101,7 +101,7 @@ body {
   .section-title {
     font-size: 13px; font-weight: 500; color: var(--text-prim);
     margin-bottom: 8px; padding-bottom: 6px;
-    border-bottom: 0.5px solid var(--border-light);
+    border-bottom: 0.5px solid var(--border-mid);
     display: flex; justify-content: space-between;
   }
   .section-pct { font-size: 11px; color: var(--text-prim); }
@@ -111,7 +111,7 @@ body {
   .race-list { display: flex; flex-direction: column; gap: 6px; }
   .race-row {
     display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
     background: var(--bg-prim);
   }
   .race-grade { font-size: 11px; font-weight: 500; padding: 2px 7px; border-radius: 10px; flex-shrink: 0; }
