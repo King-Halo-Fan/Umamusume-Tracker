@@ -97,7 +97,7 @@ const CHARS = [
   {name:"Air Messiah",color:"#B5D4F4",text:"#0C447C"},
 ];
  
-<!--grade, year, month, surface, length-->
+// grade, year, month, surface, length
 const G1_RACES = [
    {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:"Medium"},
   {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
@@ -213,13 +213,15 @@ document.getElementById("switch-pin-btn").addEventListener("click",()=>{
 });
  
 // ── Grid ──────────────────────────────────────────────────────────────────────
-function updateSummary(){
-  document.getElementById("sum-owned").textContent=CHARS.filter(c=>appData[c.name]?.owned).length;
-  document.getElementById("sum-owned-sub").textContent=`of ${CHARS.length} total`;
-  document.getElementById("sum-wins").textContent=CHARS.reduce((a,c)=>a+getWins(c.name),0);
-  document.getElementById("sum-races").textContent=G1_RACES.length;
-  document.getElementById("sum-races-sub").textContent=`+ ${TITLES.length} titles`;
-}
+ function avatarHTML(c, size = 36) {
+  const slug = c.name.toLowerCase().replace(/\./g, "").replace(/\s+/g, "_");
+  const src = `Icons/${slug}.png`;
+  return `<div class="char-avatar" style="background:${c.color};color:${c.text};overflow:hidden;">
+    <img src="${src}" width="${size}" height="${size}" style="object-fit:cover;width:100%;height:100%;"
+      onerror="this.style.display='none';this.parentElement.textContent='${initials(c.name)}';"
+    />
+  </div>`;
+} 
 function renderGrid(){
   const grid=document.getElementById("char-grid");
   const q=charSearch.toLowerCase();
@@ -228,15 +230,7 @@ function renderGrid(){
     const d=appData[c.name]||{},w=getWins(c.name);
     return `<div class="char-card ${d.owned?'owned':''}" data-name="${c.name}" tabindex="0">
       <div class="char-header">
-        function avatarHTML(c, size = 36) {
-  const slug = c.name.toLowerCase().replace(/\./g, "").replace(/\s+/g, "_");
-  const src = `Icons/${slug}.png`;
-  return `<div class="char-avatar" style="background:${c.color};color:${c.text};overflow:hidden;">
-    <img src="${src}" width="${size}" height="${size}" style="object-fit:cover;width:100%;height:100%;"
-      onerror="this.style.display='none';this.parentElement.textContent='${initials(c.name)}';"
-    />
-  </div>`;
-}
+       ${avatarHTML(c)}
         <div><div class="char-name">${c.name}</div><div class="char-wins">${w} win${w!==1?'s':''} logged</div></div>
       </div>
       <button class="own-toggle" data-own="${c.name}">${d.owned?'✓ Owned':'Mark as owned'}</button>
