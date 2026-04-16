@@ -225,7 +225,7 @@ document.getElementById("switch-pin-btn").addEventListener("click",()=>{
 function renderGrid(){
   const grid=document.getElementById("char-grid");
   const q=charSearch.toLowerCase();
-  const filtered=CHARS.filter(c=>!q||c.name.toLowerCase().includes(q));
+  const filtered=sortChars(CHARS.filter(c=>!q||c.name.toLowerCase().includes(q)));
   grid.innerHTML=filtered.map(c=>{
     const d=appData[c.name]||{},w=getWins(c.name);
     return `<div class="char-card ${d.owned?'owned':''}" data-name="${c.name}" tabindex="0">
@@ -248,7 +248,13 @@ function renderGrid(){
   });
 }
 document.getElementById("search-input").addEventListener("input",e=>{charSearch=e.target.value;renderGrid();});
- 
+ function sortChars(arr){
+  return arr.slice().sort((a,b)=>{
+    const aOwned = appData[a.name]?.owned ? 0 : 1;
+    const bOwned = appData[b.name]?.owned ? 0 : 1;
+    return aOwned - bOwned;
+  });
+}
 // ── Filters ───────────────────────────────────────────────────────────────────
 function unique(arr){return[...new Set(arr)];}
  
