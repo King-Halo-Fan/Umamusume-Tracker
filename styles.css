@@ -93,7 +93,7 @@ body {
   .char-wins { font-size: 11px; color: var(--text-prim); margin-top: 2px; }
   .own-toggle {
     width: 100%; padding: 5px; font-size: 11px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
     background: transparent; cursor: pointer; color: var(--text-prim); font-family: inherit;
     margin-top: 8px;
   }
