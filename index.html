@@ -243,10 +243,9 @@ function renderGrid(){
   grid.querySelectorAll("[data-own]").forEach(btn=>{
     btn.addEventListener("click",e=>{
       e.stopPropagation();const name=btn.dataset.own;initChar(name);
-      appData[name].owned=!appData[name].owned;scheduleSave();renderGrid();updateSummary();
+      appData[name].owned=!appData[name].owned;scheduleSave();renderGrid();
     });
   });
-  updateSummary();
 }
 document.getElementById("search-input").addEventListener("input",e=>{charSearch=e.target.value;renderGrid();});
  
@@ -343,7 +342,7 @@ function renderDetailHeader(c){
   const ob=document.getElementById("d-own-btn");
   ob.textContent=d.owned?"✓ Owned":"Mark as owned";
   ob.className="own-btn-detail"+(d.owned?" owned":"");
-  ob.onclick=()=>{d.owned=!d.owned;scheduleSave();renderDetailHeader(c);updateSummary();};
+  ob.onclick=()=>{d.owned=!d.owned;scheduleSave();renderDetailHeader(c);};
 }
  
 function tagHTML(r){
@@ -380,7 +379,7 @@ function renderDetailRaces(c){
   document.querySelectorAll("[data-race]").forEach(el=>{
     const go=()=>{
       d.races[el.dataset.race]=!d.races[el.dataset.race];
-      scheduleSave();renderDetailHeader(c);renderDetailRaces(c);updateSummary();
+      scheduleSave();renderDetailHeader(c);renderDetailRaces(c);;
     };
     el.addEventListener("click",go);
     el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
@@ -405,7 +404,7 @@ function renderDetailTitles(c){
   document.querySelectorAll("[data-title]").forEach(el=>{
     const go=()=>{
       d.titles[el.dataset.title]=!d.titles[el.dataset.title];
-      scheduleSave();renderDetailHeader(c);renderDetailTitles(c);updateSummary();
+      scheduleSave();renderDetailHeader(c);renderDetailTitles(c);
     };
     el.addEventListener("click",go);
     el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
@@ -419,4 +418,4 @@ document.getElementById("back-btn").addEventListener("click",()=>{
 });
 </script>
 </body>
-</html> -->
+</html>
