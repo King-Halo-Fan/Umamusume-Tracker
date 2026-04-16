@@ -1,158 +1,10 @@
-<!--
-  .container { max-width: 960px; margin: 0 auto; }
-  h1 { font-size: 20px; font-weight: 500; margin-bottom: 0.25rem; }
-  .subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.5rem; }
- 
-  /* PIN */
-  .pin-screen {
-    max-width: 340px; margin: 4rem auto;
-    background: var(--bg-primary); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-lg); padding: 2rem;
-  }
-  .pin-screen h2 { font-size: 16px; font-weight: 500; margin-bottom: 0.5rem; }
-  .pin-screen p { font-size: 13px; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.6; }
-  .pin-input {
-    width: 100%; padding: 10px 12px; font-size: 20px; letter-spacing: 6px;
-    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
-    background: var(--bg-primary); color: var(--text-primary);
-    font-family: monospace; text-align: center; margin-bottom: 1rem; outline: none;
-  }
-  .pin-input:focus { border-color: var(--teal); }
-  .pin-btn {
-    width: 100%; padding: 10px; font-size: 14px; font-weight: 500;
-    background: var(--teal); color: white; border: none;
-    border-radius: var(--radius-md); cursor: pointer; font-family: inherit;
-  }
-  .pin-btn:hover { background: var(--teal-mid); }
-  .pin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .pin-error { font-size: 12px; color: #A32D2D; margin-top: 8px; text-align: center; }
-  .pin-info { font-size: 11px; color: var(--text-tertiary); margin-top: 10px; text-align: center; }
- 
-  /* Sync bar */
-  .sync-bar {
-    display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;
-    padding: 8px 12px; background: var(--bg-primary);
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md); font-size: 12px;
-  }
-  .sync-status { flex: 1; color: var(--text-secondary); }
-  .sync-status.saving { color: var(--teal); }
-  .sync-status.error { color: #A32D2D; }
-  .switch-pin { font-size: 12px; color: var(--text-tertiary); background: none; border: none; cursor: pointer; font-family: inherit; text-decoration: underline; }
- 
-  /* Summary */
-  .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  .stat-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 14px; }
-  .stat-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
-  .stat-val { font-size: 22px; font-weight: 500; }
-  .stat-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
- 
-  /* Char grid */
-  .search-row { margin-bottom: 1rem; }
-  .search-row input {
-    width: 100%; padding: 8px 12px; font-size: 14px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: var(--bg-primary); color: var(--text-primary); font-family: inherit; outline: none;
-  }
-  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
-  .char-card {
-    background: var(--bg-primary); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-lg); padding: 12px; cursor: pointer; transition: border-color 0.15s;
-  }
-  .char-card:hover { border-color: var(--border-mid); }
-  .char-card.owned { border-color: var(--teal); background: var(--teal-light); }
-  .char-card.owned .char-name { color: var(--teal-dark); }
-  .char-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .char-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; flex-shrink: 0; }
-  .char-name { font-size: 13px; font-weight: 500; line-height: 1.3; }
-  .char-wins { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
-  .own-toggle {
-    width: 100%; padding: 5px; font-size: 11px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: transparent; cursor: pointer; color: var(--text-secondary); font-family: inherit; margin-top: 8px;
-  }
-  .char-card.owned .own-toggle { background: var(--teal-mid); color: #E1F5EE; border-color: var(--teal-mid); }
- 
-  /* Detail */
-  .detail-view { display: none; }
-  .back-btn {
-    background: transparent; border: 0.5px solid var(--border-mid);
-    border-radius: var(--radius-md); padding: 6px 14px; font-size: 13px;
-    cursor: pointer; color: var(--text-secondary); font-family: inherit; margin-bottom: 1rem;
-  }
-  .back-btn:hover { background: var(--bg-secondary); }
-  .detail-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
-  .detail-avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; flex-shrink: 0; }
-  .detail-name { font-size: 17px; font-weight: 500; }
-  .detail-wins-sub { font-size: 12px; color: var(--text-secondary); }
-  .own-btn-detail {
-    margin-left: auto; padding: 6px 14px; font-size: 12px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    cursor: pointer; font-family: inherit; background: transparent; color: var(--text-secondary);
-  }
-  .own-btn-detail.owned { background: var(--teal-mid); color: #E1F5EE; border-color: var(--teal-mid); }
- 
-  /* Filters */
-  .filters-wrap {
-    background: var(--bg-primary); border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 1.25rem;
-  }
-  .filters-title { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 10px; }
-  .filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
-  .filter-row:last-child { margin-bottom: 0; }
-  .filter-label { font-size: 11px; color: var(--text-tertiary); width: 52px; flex-shrink: 0; }
-  .filter-search {
-    flex: 1; min-width: 140px; padding: 5px 10px; font-size: 12px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: var(--bg-secondary); color: var(--text-primary); font-family: inherit; outline: none;
-  }
-  .filter-chip {
-    padding: 3px 10px; font-size: 11px; border-radius: 20px;
-    border: 0.5px solid var(--border-light); background: var(--bg-secondary);
-    cursor: pointer; color: var(--text-secondary); font-family: inherit; white-space: nowrap;
-  }
-  .filter-chip.active { background: var(--teal); border-color: var(--teal); color: white; }
-  .filter-clear { font-size: 11px; color: var(--text-tertiary); background: none; border: none; cursor: pointer; font-family: inherit; text-decoration: underline; margin-left: auto; }
- 
-  /* Race list */
-  .section { margin-bottom: 1.5rem; }
-  .section-title {
-    font-size: 13px; font-weight: 500; color: var(--text-secondary);
-    margin-bottom: 8px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border-light);
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .section-pct { font-size: 11px; color: var(--text-tertiary); }
-  .progress-bar-wrap { height: 5px; background: var(--bg-secondary); border-radius: 3px; margin-bottom: 1rem; overflow: hidden; }
-  .progress-bar { height: 100%; background: var(--teal); border-radius: 3px; transition: width 0.3s; }
-  .race-list { display: flex; flex-direction: column; gap: 6px; }
-  .race-row {
-    display: flex; align-items: center; gap: 8px; padding: 8px 10px;
-    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
-    background: var(--bg-primary); flex-wrap: wrap;
-  }
-  .race-name { font-size: 13px; flex: 1; min-width: 120px; }
-  .race-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-  .tag {
-    font-size: 10px; padding: 2px 6px; border-radius: 8px; white-space: nowrap;
-    font-weight: 500;
-  }
-  .tag-grade-G1  { background: #FAECE7; color: #993C1D; }
-  .tag-grade-G2  { background: #E6F1FB; color: #185FA5; }
-  .tag-grade-G3  { background: #EAF3DE; color: #3B6D11; }
-  .tag-year-Junior  { background: #EEEDFE; color: #3C3489; }
-  .tag-year-Classic { background: #FAEEDA; color: #633806; }
-  .tag-year-Senior  { background: #FCEBEB; color: #A32D2D; }
-  .tag-surface-Turf { background: #EAF3DE; color: #3B6D11; }
-  .tag-surface-Dirt { background: #FAC775; color: #412402; }
-  .tag-length { background: var(--bg-secondary); color: var(--text-secondary); }
-  .tag-month { background: var(--bg-secondary); color: var(--text-secondary); }
-  .race-check {
-    width: 22px; height: 22px; border-radius: 5px; border: 0.5px solid var(--border-mid);
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; background: transparent; font-size: 12px; font-weight: 500; color: transparent;
-  }
-  .race-check.won { background: var(--teal); border-color: var(--teal); color: white; }
-  .no-results { font-size: 13px; color: var(--text-tertiary); padding: 12px 0; text-align: center; }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+<link rel="stylesheet" href="styles.css">
+<title>Umamusume Pretty Derby Tracker</title>
 </head>
 <body>
 <div class="container">
@@ -174,11 +26,6 @@
       <button class="switch-pin" id="switch-pin-btn">Switch PIN</button>
     </div>
     <div id="chars-view">
-      <div class="summary-bar">
-        <div class="stat-card"><div class="stat-label">Characters owned</div><div class="stat-val" id="sum-owned">0</div><div class="stat-sub" id="sum-owned-sub"></div></div>
-        <div class="stat-card"><div class="stat-label">Total wins logged</div><div class="stat-val" id="sum-wins">0</div><div class="stat-sub">across all characters</div></div>
-        <div class="stat-card"><div class="stat-label">G1 races tracked</div><div class="stat-val" id="sum-races">0</div><div class="stat-sub" id="sum-races-sub"></div></div>
-      </div>
       <div class="search-row"><input id="search-input" placeholder="Search characters..." /></div>
       <div class="char-grid" id="char-grid"></div>
     </div>
@@ -250,37 +97,37 @@ const CHARS = [
   {name:"Air Messiah",color:"#B5D4F4",text:"#0C447C"},
 ];
  
-// grade, year, month, surface, length (metres)
+<!--grade, year, month, surface, length-->
 const G1_RACES = [
-  {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:2000},
-  {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:1600},
-  {name:"Asahi Hai Futurity Stakes",grade:"G1",year:"Junior",  month:"Early Dec", surface:"Turf", length:1600},
-  {name:"Oka Sho",                 grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:1600},
-  {name:"Satsuki Sho",             grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:2000},
-  {name:"Tenno Sho (Spring)",      grade:"G1", year:"Classic", month:"Late Apr",  surface:"Turf", length:3200},
-  {name:"NHK Mile Cup",            grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:1600},
-  {name:"Victoria Mile",           grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:1600},
-  {name:"Japanese Oaks",           grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:2400},
-  {name:"Japanese Derby",          grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:2400},
-  {name:"Yasuda Kinen",            grade:"G1", year:"Classic", month:"Early Jun", surface:"Turf", length:1600},
-  {name:"Takarazuka Kinen",        grade:"G1", year:"Classic", month:"Late Jun",  surface:"Turf", length:2200},
-  {name:"Sprinters Stakes",        grade:"G1", year:"Classic", month:"Late Sep",  surface:"Turf", length:1200},
-  {name:"Shuka Sho",               grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:2000},
-  {name:"Kikuka Sho",              grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:3000},
-  {name:"Tenno Sho (Autumn)",      grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:2000},
-  {name:"Queen Elizabeth II Cup",  grade:"G1", year:"Classic", month:"Early Nov", surface:"Turf", length:2200},
-  {name:"Mile Championship",       grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:1600},
-  {name:"Japan Cup",               grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:2400},
-  {name:"Champions Cup",           grade:"G1", year:"Classic", month:"Early Dec", surface:"Dirt", length:1800},
-  {name:"Arima Kinen",             grade:"G1", year:"Classic", month:"Late Dec",  surface:"Turf", length:2500},
-  {name:"February Stakes",         grade:"G1", year:"Senior",  month:"Late Feb",  surface:"Dirt", length:1600},
-  {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:1200},
-  {name:"Osaka Hai",               grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:2000},
-  {name:"Japan Dirt Derby",        grade:"G1", year:"Senior",  month:"Early Jul", surface:"Dirt", length:2000},
-  {name:"JBC Classic",             grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:2000},
-  {name:"JBC Ladies Classic",      grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:1800},
-  {name:"Tokyo Daishoten",         grade:"G1", year:"Senior",  month:"Late Dec",  surface:"Dirt", length:2000},
-  {name:"Hanshin Juvenile Fillies (Dec)", grade:"G1", year:"Junior", month:"Early Dec", surface:"Turf", length:1600},
+   {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:"Medium"},
+  {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Asahi Hai Futurity Stakes",grade:"G1",year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Oka Sho",                 grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"},
+  {name:"Satsuki Sho",             grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Medium"},
+  {name:"Tenno Sho (Spring)",      grade:"G1", year:"Classic", month:"Late Apr",  surface:"Turf", length:"Long"},
+  {name:"NHK Mile Cup",            grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:"Mile"},
+  {name:"Victoria Mile",           grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:"Mile"},
+  {name:"Japanese Oaks",           grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
+  {name:"Japanese Derby",          grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
+  {name:"Yasuda Kinen",            grade:"G1", year:"Classic", month:"Early Jun", surface:"Turf", length:"Mile"},
+  {name:"Takarazuka Kinen",        grade:"G1", year:"Classic", month:"Late Jun",  surface:"Turf", length:"Medium"},
+  {name:"Sprinters Stakes",        grade:"G1", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Sprint"},
+  {name:"Shuka Sho",               grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
+  {name:"Kikuka Sho",              grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Long"},
+  {name:"Tenno Sho (Autumn)",      grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
+  {name:"Queen Elizabeth II Cup",  grade:"G1", year:"Classic", month:"Early Nov", surface:"Turf", length:"Medium"},
+  {name:"Mile Championship",       grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Mile"},
+  {name:"Japan Cup",               grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Medium"},
+  {name:"Champions Cup",           grade:"G1", year:"Classic", month:"Early Dec", surface:"Dirt", length:"Mile"},
+  {name:"Arima Kinen",             grade:"G1", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Long"},
+  {name:"February Stakes",         grade:"G1", year:"Senior",  month:"Late Feb",  surface:"Dirt", length:"Mile"},
+  {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Sprint"},
+  {name:"Osaka Hai",               grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Medium"},
+  {name:"Japan Dirt Derby",        grade:"G1", year:"Senior",  month:"Early Jul", surface:"Dirt", length:"Medium"},
+  {name:"JBC Classic",             grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:"Medium"},
+  {name:"JBC Ladies Classic",      grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:"Mile"},
+  {name:"Tokyo Daishoten",         grade:"G1", year:"Senior",  month:"Late Dec",  surface:"Dirt", length:"Medium"},
+  {name:"Hanshin Juvenile Fillies (Dec)", grade:"G1", year:"Junior", month:"Early Dec", surface:"Turf", length:"Mile"},
 ];
  
 const TITLES = [
@@ -408,7 +255,7 @@ const YEARS    = ["Junior","Classic","Senior"];
 const SURFACES = ["Turf","Dirt"];
 const GRADES   = ["G1","G2","G3"];
 const MONTHS   = unique(G1_RACES.map(r=>r.month));
-const LENGTHS  = unique(G1_RACES.map(r=>r.length).sort((a,b)=>a-b));
+const LENGTHS  = ["Sprint","Mile","Medium","Long"]
  
 function filteredRaces(){
   const q=fSearch.toLowerCase();
@@ -432,7 +279,7 @@ function renderFilters(){
   const chipRow=(label,options,current,setter)=>`
     <div class="filter-row">
       <span class="filter-label">${label}</span>
-      ${options.map(o=>`<button class="filter-chip ${current===o?'active':''}" data-filter-label="${label}" data-filter-val="${o}">${o}${label==='Length'?'m':''}</button>`).join("")}
+      ${options.map(o=>`<button class="filter-chip ${current===o?'active':''}" data-filter-label="${label}" data-filter-val="${o}">${o}${label==='Length'?'':''}</button>`).join("")}
     </div>`;
  
   wrap.innerHTML=`<div class="filters-wrap">
@@ -463,7 +310,7 @@ function renderFilters(){
       if(label==="Year")    fYear   =(fYear   ===val?null:val);
       if(label==="Month")   fMonth  =(fMonth  ===val?null:val);
       if(label==="Surface") fSurface=(fSurface===val?null:val);
-      if(label==="Length")  fLength =(fLength ===Number(val)?null:Number(val));
+      if(label==="Length")  fLength =(fLength ===val?null:val);
       renderDetailRaces(CHARS.find(x=>x.name===currentChar));
       renderFilters();
     });
@@ -502,7 +349,7 @@ function tagHTML(r){
          <span class="tag tag-year-${r.year}">${r.year}</span>
          <span class="tag tag-month">${r.month}</span>
          <span class="tag tag-surface-${r.surface}">${r.surface}</span>
-         <span class="tag tag-length">${r.length}m</span>`;
+         <span class="tag tag-length">${r.length}</span>`;
 }
  
 function renderDetailRaces(c){
@@ -571,298 +418,3 @@ document.getElementById("back-btn").addEventListener("click",()=>{
 </script>
 </body>
 </html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-<link rel="stylesheet" href="styles.css">
-<title>Umamusume Pretty Derby Tracker</title>
-</head>
-<body>
-<div class="container">
-  <h1>Umamusume Pretty Derby Tracker</h1>
-  <p class="subtitle">Track your characters and their race wins &amp; titles</p>
-
-  <div id="pin-screen" class="pin-screen">
-    <h2>Enter your PIN</h2>
-    <p>Choose any PIN to save your progress to the cloud. Use the same PIN on any browser to load it back.</p>
-    <input class="pin-input" id="pin-input" type="password" maxlength="20" placeholder="••••" autocomplete="off" />
-    <button class="pin-btn" id="pin-btn">Load / create save</button>
-    <div class="pin-error" id="pin-error" style="display:none"></div>
-    <div class="pin-info">Your PIN is hashed before being stored — it is never saved in plain text.</div>
-  </div>
-
-  <div id="main-app" style="display:none">
-    <div class="sync-bar">
-      <span class="sync-status" id="sync-status">Loaded from cloud</span>
-      <button class="switch-pin" id="switch-pin-btn">Switch PIN</button>
-    </div>
-    <div id="chars-view">
-      <div class="summary-bar">
-        <div class="stat-card"><div class="stat-label">Characters owned</div><div class="stat-val" id="sum-owned">0</div><div class="stat-sub" id="sum-owned-sub"></div></div>
-        <div class="stat-card"><div class="stat-label">Total wins logged</div><div class="stat-val" id="sum-wins">0</div><div class="stat-sub">across all characters</div></div>
-        <div class="stat-card"><div class="stat-label">G1 races tracked</div><div class="stat-val" id="sum-races">0</div><div class="stat-sub" id="sum-races-sub"></div></div>
-      </div>
-      <div class="search-row"><input id="search-input" placeholder="Search characters..." /></div>
-      <div class="char-grid" id="char-grid"></div>
-    </div>
-    <div class="detail-view" id="detail-view">
-      <button class="back-btn" id="back-btn">← All characters</button>
-      <div class="detail-header">
-        <div class="detail-avatar" id="d-avatar"></div>
-        <div><div class="detail-name" id="d-name"></div><div class="detail-wins-sub" id="d-sub"></div></div>
-        <button class="own-btn-detail" id="d-own-btn"></button>
-      </div>
-      <div id="d-races-section" class="section"></div>
-      <div id="d-titles-section" class="section"></div>
-    </div>
-  </div>
-</div>
-
-<script>
-const SUPABASE_URL = "https://rzcoksxxqggsweqdkzzb.supabase.co";
-const SUPABASE_KEY = "sb_publishable_HH8gBjpd7CGeIpKzIGNu6g_YGz-oLFx";
-
-const CHARS = [
-  {name:"Special Week",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Silence Suzuka",color:"#F4C0D1",text:"#72243E"},
-  {name:"Tokai Teio",color:"#CED0FF",text:"#3C3489"},
-  {name:"Mejiro McQueen",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Gold Ship",color:"#D3D1C7",text:"#444441"},
-  {name:"Vodka",color:"#F5C4B3",text:"#712B13"},
-  {name:"Daiwa Scarlet",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Oguri Cap",color:"#FAC775",text:"#633806"},
-  {name:"El Condor Pasa",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Grass Wonder",color:"#9FE1CB",text:"#085041"},
-  {name:"Seiun Sky",color:"#B5D4F4",text:"#0C447C"},
-  {name:"King Halo",color:"#F4C0D1",text:"#72243E"},
-  {name:"Symboli Rudolf",color:"#D3D1C7",text:"#444441"},
-  {name:"Narita Brian",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Mihono Bourbon",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Rice Shower",color:"#F4C0D1",text:"#72243E"},
-  {name:"Super Creek",color:"#9FE1CB",text:"#085041"},
-  {name:"T.M. Opera O",color:"#FAC775",text:"#633806"},
-  {name:"Biwa Hayahide",color:"#CED0FF",text:"#3C3489"},
-  {name:"Mayano Top Gun",color:"#FAC775",text:"#633806"},
-  {name:"Maruzensky",color:"#F5C4B3",text:"#712B13"},
-  {name:"Fuji Kiseki",color:"#9FE1CB",text:"#085041"},
-  {name:"Agnes Tachyon",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Agnes Digital",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Air Groove",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Fine Motion",color:"#CED0FF",text:"#3C3489"},
-  {name:"Hishi Amazon",color:"#F5C4B3",text:"#712B13"},
-  {name:"Narita Taishin",color:"#D3D1C7",text:"#444441"},
-  {name:"Manhattan Cafe",color:"#CED0FF",text:"#3C3489"},
-  {name:"Eishin Flash",color:"#FAC775",text:"#633806"},
-  {name:"Smart Falcon",color:"#9FE1CB",text:"#085041"},
-  {name:"Curren Chan",color:"#F4C0D1",text:"#72243E"},
-  {name:"Meisho Doto",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Haru Urara",color:"#F5C4B3",text:"#712B13"},
-  {name:"Winning Ticket",color:"#FAC775",text:"#633806"},
-  {name:"Twin Turbo",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Kitasan Black",color:"#D3D1C7",text:"#444441"},
-  {name:"Satono Diamond",color:"#CED0FF",text:"#3C3489"},
-  {name:"Gold City",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Tosen Jordan",color:"#FAC775",text:"#633806"},
-  {name:"Mejiro Dober",color:"#F5C4B3",text:"#712B13"},
-  {name:"Tamamo Cross",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Kawakami Princess",color:"#F4C0D1",text:"#72243E"},
-  {name:"Hishi Akebono",color:"#9FE1CB",text:"#085041"},
-  {name:"Matikane Fukukitaru",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Sakura Chiyono O",color:"#F4C0D1",text:"#72243E"},
-  {name:"Air Messiah",color:"#B5D4F4",text:"#0C447C"},
-];
-
-const G1_RACES = [
-  "Hopeful Stakes","Hanshin Juvenile Fillies","Asahi Hai Futurity Stakes",
-  "Oka Sho","Satsuki Sho","Tenno Sho (Spring)","NHK Mile Cup","Victoria Mile",
-  "Japanese Oaks","Japanese Derby","Yasuda Kinen","Takarazuka Kinen",
-  "Sprinters Stakes","Shuka Sho","Kikuka Sho","Tenno Sho (Autumn)",
-  "Queen Elizabeth II Cup","Mile Championship","Japan Cup","Champions Cup",
-  "Hanshin Juvenile Fillies (Dec)","Arima Kinen","February Stakes",
-  "Takamatsunomiya Kinen","Osaka Hai","Japan Dirt Derby","JBC Classic",
-  "JBC Ladies Classic","Tokyo Daishoten",
-];
-
-const TITLES = [
-  "Classic Triple Crown","Triple Tiara","Senior Spring Triple Crown",
-  "Senior Autumn Triple Crown","Spring & Autumn Tenno Sho","Spring & Autumn Grand Prix",
-  "Spring & Autumn Sprint Champions","Spring & Autumn Mile Champions",
-  "URA Finale Champion","All Comers Victor",
-];
-
-async function hashPin(pin) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(pin));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,"0")).join("");
-}
-
-async function dbLoad(pinHash) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/tracker?pin=eq.${pinHash}&select=data`, {
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
-  });
-  if (!res.ok) throw new Error("Load failed");
-  const rows = await res.json();
-  return rows.length ? rows[0].data : null;
-}
-
-async function dbSave(pinHash, data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/tracker`, {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json", "Prefer": "resolution=merge-duplicates",
-    },
-    body: JSON.stringify({ pin: pinHash, data, updated_at: new Date().toISOString() }),
-  });
-  if (!res.ok) throw new Error("Save failed");
-}
-
-let pinHash = null, appData = {}, currentChar = null, search = "", saveTimer = null;
-
-function initChar(name) {
-  if (!appData[name]) appData[name] = { owned: false, races: {}, titles: {} };
-}
-function initials(name) { return name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase(); }
-function getWins(name) {
-  const d = appData[name]; if (!d) return 0;
-  return Object.values(d.races||{}).filter(Boolean).length + Object.values(d.titles||{}).filter(Boolean).length;
-}
-function setSyncStatus(msg, cls) {
-  const el = document.getElementById("sync-status");
-  el.textContent = msg; el.className = "sync-status" + (cls ? " "+cls : "");
-}
-function scheduleSave() {
-  clearTimeout(saveTimer); setSyncStatus("Saving…", "saving");
-  saveTimer = setTimeout(async () => {
-    try { await dbSave(pinHash, appData); setSyncStatus("Saved to cloud ✓"); }
-    catch { setSyncStatus("Save failed — check connection", "error"); }
-  }, 800);
-}
-
-// PIN screen
-document.getElementById("pin-btn").addEventListener("click", async () => {
-  const pin = document.getElementById("pin-input").value.trim();
-  const errEl = document.getElementById("pin-error");
-  if (!pin) { errEl.textContent = "Please enter a PIN."; errEl.style.display = "block"; return; }
-  const btn = document.getElementById("pin-btn");
-  btn.disabled = true; btn.textContent = "Loading…"; errEl.style.display = "none";
-  try {
-    pinHash = await hashPin(pin);
-    const saved = await dbLoad(pinHash);
-    appData = saved || {};
-    document.getElementById("pin-screen").style.display = "none";
-    document.getElementById("main-app").style.display = "block";
-    setSyncStatus(saved ? "Loaded from cloud ✓" : "New save — enter anything to get started");
-    renderGrid();
-  } catch {
-    errEl.textContent = "Could not connect. Check your internet and try again.";
-    errEl.style.display = "block";
-    btn.disabled = false; btn.textContent = "Load / create save";
-  }
-});
-document.getElementById("pin-input").addEventListener("keydown", e => { if (e.key === "Enter") document.getElementById("pin-btn").click(); });
-document.getElementById("switch-pin-btn").addEventListener("click", () => {
-  pinHash = null; appData = {}; currentChar = null; search = "";
-  document.getElementById("main-app").style.display = "none";
-  document.getElementById("chars-view").style.display = "block";
-  document.getElementById("detail-view").style.display = "none";
-  document.getElementById("pin-input").value = "";
-  document.getElementById("pin-screen").style.display = "block";
-});
-
-// Grid
-function updateSummary() {
-  document.getElementById("sum-owned").textContent = CHARS.filter(c=>appData[c.name]?.owned).length;
-  document.getElementById("sum-owned-sub").textContent = `of ${CHARS.length} total`;
-  document.getElementById("sum-wins").textContent = CHARS.reduce((a,c)=>a+getWins(c.name),0);
-  document.getElementById("sum-races").textContent = G1_RACES.length;
-  document.getElementById("sum-races-sub").textContent = `+ ${TITLES.length} titles`;
-}
-
-function renderGrid() {
-  const grid = document.getElementById("char-grid");
-  const q = search.toLowerCase();
-  const filtered = CHARS.filter(c => !q || c.name.toLowerCase().includes(q));
-  grid.innerHTML = filtered.map(c => {
-    const d = appData[c.name]||{}, w = getWins(c.name);
-    return `<div class="char-card ${d.owned?'owned':''}" data-name="${c.name}" tabindex="0">
-      <div class="char-header">
-        <div class="char-avatar" style="background:${c.color};color:${c.text}">${initials(c.name)}</div>
-        <div><div class="char-name">${c.name}</div><div class="char-wins">${w} win${w!==1?'s':''} logged</div></div>
-      </div>
-      <button class="own-toggle" data-own="${c.name}">${d.owned?'✓ Owned':'Mark as owned'}</button>
-    </div>`;
-  }).join("");
-  grid.querySelectorAll(".char-card").forEach(el => {
-    el.addEventListener("click", e => { if (e.target.dataset.own!==undefined) return; showDetail(el.dataset.name); });
-    el.addEventListener("keydown", e => { if (e.key==="Enter") showDetail(el.dataset.name); });
-  });
-  grid.querySelectorAll("[data-own]").forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.stopPropagation(); const name=btn.dataset.own; initChar(name);
-      appData[name].owned=!appData[name].owned; scheduleSave(); renderGrid(); updateSummary();
-    });
-  });
-  updateSummary();
-}
-document.getElementById("search-input").addEventListener("input", e => { search=e.target.value; renderGrid(); });
-
-// Detail
-function showDetail(name) {
-  currentChar=name; initChar(name);
-  document.getElementById("chars-view").style.display="none";
-  document.getElementById("detail-view").style.display="block";
-  renderDetail(CHARS.find(x=>x.name===name));
-}
-
-function renderDetail(c) {
-  const d=appData[c.name];
-  const raceWins=Object.values(d.races||{}).filter(Boolean).length;
-  const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
-  const av=document.getElementById("d-avatar");
-  av.textContent=initials(c.name); av.style.background=c.color; av.style.color=c.text;
-  document.getElementById("d-name").textContent=c.name;
-  document.getElementById("d-sub").textContent=`${raceWins} G1 wins · ${titleWins} titles`;
-  const ob=document.getElementById("d-own-btn");
-  ob.textContent=d.owned?"✓ Owned":"Mark as owned";
-  ob.className="own-btn-detail"+(d.owned?" owned":"");
-  ob.onclick=()=>{ d.owned=!d.owned; scheduleSave(); renderDetail(c); updateSummary(); };
-
-  const rPct=Math.round(raceWins/G1_RACES.length*100);
-  document.getElementById("d-races-section").innerHTML=`
-    <div class="section-title">G1 races — ${raceWins} / ${G1_RACES.length} <span class="section-pct">${rPct}%</span></div>
-    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${rPct}%"></div></div>
-    <div class="race-list">${G1_RACES.map(r=>`
-      <div class="race-row"><span class="race-grade g1">G1</span><span class="race-name">${r}</span>
-      <div class="race-check ${d.races[r]?'won':''}" data-race="${r}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r]}">${d.races[r]?'✓':''}</div></div>`).join("")}
-    </div>`;
-
-  const tPct=Math.round(titleWins/TITLES.length*100);
-  document.getElementById("d-titles-section").innerHTML=`
-    <div class="section-title">Titles — ${titleWins} / ${TITLES.length} <span class="section-pct">${tPct}%</span></div>
-    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
-    <div class="race-list">${TITLES.map(t=>`
-      <div class="race-row"><span class="race-grade title-badge">Title</span><span class="race-name">${t}</span>
-      <div class="race-check ${d.titles[t]?'won':''}" data-title="${t}" tabindex="0" role="checkbox" aria-checked="${!!d.titles[t]}">${d.titles[t]?'✓':''}</div></div>`).join("")}
-    </div>`;
-
-  document.querySelectorAll("[data-race]").forEach(el => {
-    const go=()=>{ d.races[el.dataset.race]=!d.races[el.dataset.race]; scheduleSave(); renderDetail(c); updateSummary(); };
-    el.addEventListener("click",go); el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
-  });
-  document.querySelectorAll("[data-title]").forEach(el => {
-    const go=()=>{ d.titles[el.dataset.title]=!d.titles[el.dataset.title]; scheduleSave(); renderDetail(c); updateSummary(); };
-    el.addEventListener("click",go); el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
-  });
-}
-
-document.getElementById("back-btn").addEventListener("click", () => {
-  document.getElementById("detail-view").style.display="none";
-  document.getElementById("chars-view").style.display="block";
-  renderGrid();
-});
-</script>
-</body>
-</html>
