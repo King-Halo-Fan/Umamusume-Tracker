@@ -74,7 +74,7 @@ body {
   }
   .search-row input:focus { border-color: var(--border-mid); }
 /* Char grid */
-  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
   .char-card {
     background: var(--bg-prim); border: 0.5px solid var(--border-light);
     border-radius: var(--radius-lg); padding: 12px; cursor: pointer;
