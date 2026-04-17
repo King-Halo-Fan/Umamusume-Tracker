@@ -457,9 +457,7 @@ function renderDetailHeader(c){
   const d=appData[c.name];
   const raceWins=Object.values(d.races||{}).filter(Boolean).length;
   const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
-  const av=document.getElementById("d-avatar");
   ${avatarHTML(c)}
-  av.textContent=initials(c.name);av.style.background=c.color;av.style.color=c.text;
   document.getElementById("d-name").textContent=c.name;
   document.getElementById("d-sub").textContent=`${raceWins} Wins · ${titleWins} titles`;
   const ob=document.getElementById("d-own-btn");
