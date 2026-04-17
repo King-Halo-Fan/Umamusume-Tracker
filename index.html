@@ -513,7 +513,7 @@ function renderDetailTitles(c){
   const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
   const tPct=Math.round(titleWins/TITLES.length*100);
   document.getElementById("d-titles-section").innerHTML=`
-    <div class="section-title">Titles — ${titleWins} / ${TITLES.length} <span class="section-pct">${tPct}%</span></div>
+    <div class="section-title">Epithets — ${titleWins} / ${TITLES.length} <span class="section-pct">${tPct}%</span></div>
     <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
     <div class="race-list">${TITLES.map(t=>`
       <div class="race-row">
