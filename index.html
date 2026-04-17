@@ -207,12 +207,41 @@ const G1_RACES = [
   {name:"Hanshin Cup",             grade:"G2", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Sprint"},
   {name:"Tokyo Daishoten",         grade:"G1", year:"Classic",  month:"Late Dec",  surface:"Dirt", length:"Medium"},
   //Senior Year
-  
+  {name:"Aichi Hai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
+  {name:"Kyoto Kimpai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Mile"},
+  {name:"Nakayama Kimpai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
+  {name:"Nikkei Shinshun Hai",         grade:"G2", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
+  {name:"American JCC",         grade:"G2", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Medium"},
+  {name:"Negishi Stakes",         grade:"G3", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Sprint"},
+  {name:"Silk Road Stakes",         grade:"G3", year:"Senior",  month:"Late Jan",  surface:"Turf", length:"Sprint"},
+  {name:"Tokai Stakes",         grade:"G2", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Mile"},
+  {name:"Kyoto Kinen",         grade:"G2", year:"Senior",  month:"Early Feb",  surface:"Turf", length:"Medium"},
+  {name:"Tokyo Shimbun Hai",         grade:"G3", year:"Senior",  month:"Early Feb",  surface:"Turf", length:"Mile"},
+  {name:"Diamond Stakes",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Long"},
   {name:"February Stakes",         grade:"G1", year:"Senior",  month:"Late Feb",  surface:"Dirt", length:"Mile"},
-  {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Sprint"},
+  {name:"Hankyu Hai",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Sprint"},
+  {name:"Kokura Daishoten",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Mile"},
+  {name:"Kyoto Umamusume Stakes",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Sprint"},
+  {name:"Nakayama Kinen",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Mile"},
+  {name:"Kinko Sho",         grade:"G2", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Medium"},
+  {name:"Nakayama Umamusume Stakes",         grade:"G3", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Mile"},
+  {name:"Ocean Stakes",         grade:"G3", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Sprint"},
+  {name:"Hanshin Daishoten",         grade:"G2", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Long"},
+  {name:"March Stakes",         grade:"G3", year:"Senior",  month:"Late Mar",  surface:"Dirt", length:"Mile"},
+  {name:"Nikkei Sho",         grade:"G2", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Long"},
   {name:"Osaka Hai",               grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Medium"},
+  {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Sprint"},
+  {name:"Antares Stakes",      grade:"G3", year:"Senior", month:"Early Apr",  surface:"Dirt", length:"Mile"},
+  {name:"Hanshin Umamusume Stakes",      grade:"G2", year:"Senior", month:"Early Apr",  surface:"Turf", length:"Mile"},
+  {name:"Lord Derby Challenge Trophy",      grade:"G3", year:"Senior", month:"Early Apr",  surface:"Turf", length:"Mile"},
+  {name:"Fukushima Umamusume Stakes",      grade:"G3", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Mile"},
+  {name:"Milers Cup",      grade:"G2", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Mile"},
   {name:"Tenno Sho (Spring)",      grade:"G1", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Long"},
+  {name:"Keio Hai Spring Cup",           grade:"G2", year:"Senior", month:"Early May", surface:"Turf", length:"Sprint"},
+  {name:"Niigata Daishoten",           grade:"G3", year:"Senior", month:"Early May", surface:"Turf", length:"Medium"},
   {name:"Victoria Mile",           grade:"G1", year:"Senior", month:"Early May", surface:"Turf", length:"Mile"},
+  {name:"Heian Stakes",           grade:"G3", year:"Senior", month:"Late May", surface:"Dirt", length:"Medium"},
+  {name:"Teio Sho",           grade:"G1", year:"Senior", month:"Late Jun", surface:"Dirt", length:"Medium"},
   
 
 ];
@@ -454,7 +483,7 @@ function renderDetailRaces(c){
  
   document.getElementById("d-races-section").innerHTML=`
     <div class="section-title">
-      G1 races — ${totalWon} / ${G1_RACES.length} total
+      Wins — ${totalWon} / ${G1_RACES.length} total
       <span class="section-pct">${pct}%</span>
     </div>
     <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
