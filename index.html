@@ -106,35 +106,115 @@ const CHARS = [
  
 // grade, year, month, surface, length
 const G1_RACES = [
-   {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:"Medium"},
-  {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Hakodate Junior Stakes",                 grade:"G3", year:"Junior", month:"Late Jul", surface:"Turf", length:"Sprint"},
+  {name:"Niigata Junior Stakes",grade:"G3", year:"Junior",  month:"Late Aug", surface:"Turf", length:"Mile"},
+  {name:"Kokura Junior Stakes",                 grade:"G3", year:"Junior", month:"Early Sep", surface:"Turf", length:"Sprint"},
+  {name:"Sapporo Junior Stakes",grade:"G3", year:"Junior",  month:"Early Sep", surface:"Turf", length:"Mile"},
+  {name:"Saudi Arabia Royal Cup",grade:"G3", year:"Junior",  month:"Early Oct", surface:"Turf", length:"Mile"},
+  {name:"Artemis Stakes",grade:"G3", year:"Junior",  month:"Late Oct", surface:"Turf", length:"Mile"},
+  {name:"Daily Hai Junior Stakes",grade:"G2", year:"Junior",  month:"Early Nov", surface:"Turf", length:"Mile"},
+  {name:"Fantasy Stakes",                 grade:"G3", year:"Junior", month:"Early Nov", surface:"Turf", length:"Sprint"},
+  {name:"Keio Hai Junior Stakes",grade:"G2", year:"Junior",  month:"Early Nov", surface:"Turf", length:"Sprint"},
+  {name:"Kyoto Junior Stakes",                 grade:"G3", year:"Junior", month:"Late Nov", surface:"Turf", length:"Medium"},
+  {name:"Tokyo Sports Hai Junior Stakes",grade:"G3", year:"Junior",  month:"Late Nov", surface:"Turf", length:"Mile"},
   {name:"Asahi Hai Futurity Stakes",grade:"G1",year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:"Medium"},
+  //Classic
+  {name:"Fairy Stakes",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Mile"},
+  {name:"Keisei Hai",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Medium"},
+  {name:"Shinzan Kinen",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Mile"},
+  {name:"Kisaragi Sho",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
+  {name:"Kyodo News Hai",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
+  {name:"Queen Cup",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
+  {name:"Fillies' Revue",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Sprint"},
+  {name:"Tulip Sho",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Mile"},
+  {name:"Yayoi Sho",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Medium"},
+  {name:"Falcon Stakes",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Sprint"},
+  {name:"Flower Cup",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
+  {name:"Mainichi Hai",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
+  {name:"Spring Stakes",                 grade:"G2", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
+  {name:"Arlington Cup",                 grade:"G3", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"}, 
+  {name:"New Zealand Trophy",                 grade:"G2", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"},
   {name:"Oka Sho",                 grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"},
   {name:"Satsuki Sho",             grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Medium"},
-  {name:"Tenno Sho (Spring)",      grade:"G1", year:"Classic", month:"Late Apr",  surface:"Turf", length:"Long"},
+  {name:"Aoba Sho",             grade:"G2", year:"Classic", month:"Late Apr", surface:"Turf", length:"Medium"},
+  {name:"Flora Stakes",             grade:"G2", year:"Classic", month:"Late Apr", surface:"Turf", length:"Medium"},
+  {name:"Kyoto Shimbun Hai",            grade:"G2", year:"Classic", month:"Early May", surface:"Turf", length:"Medium"},
   {name:"NHK Mile Cup",            grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:"Mile"},
-  {name:"Victoria Mile",           grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:"Mile"},
+  {name:"Aoi Stakes",           grade:"G3", year:"Classic", month:"Late May",  surface:"Turf", length:"Sprint"},
   {name:"Japanese Oaks",           grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
   {name:"Japanese Derby",          grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
+  {name:"Epsom Cup",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Mile"},
+  {name:"Mermaid Stakes",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Medium"},
+  {name:"Naruo Kinen",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Medium"},
   {name:"Yasuda Kinen",            grade:"G1", year:"Classic", month:"Early Jun", surface:"Turf", length:"Mile"},
+  {name:"Hakodate Sprint Stakes",        grade:"G3", year:"Classic", month:"Late Jun",  surface:"Turf", length:"Sprint"},
   {name:"Takarazuka Kinen",        grade:"G1", year:"Classic", month:"Late Jun",  surface:"Turf", length:"Medium"},
+  {name:"Unicorn Stakes",        grade:"G3", year:"Classic", month:"Late Jun",  surface:"Dirt", length:"Mile"},
+  {name:"CBC Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Sprint"},
+  {name:"Hakodate Kinen",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Medium"},
+  {name:"Japan Dirt Derby",        grade:"G1", year:"Classic",  month:"Early Jul", surface:"Dirt", length:"Medium"},
+  {name:"Procyon Stakes",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Dirt", length:"Sprint"},
+  {name:"Radio Nikkei Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Mile"},
+  {name:"Tanabata Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Medium"},
+  {name:"Chukyo Kinen",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Mile"},
+  {name:"Ibis Summer Dash",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Sprint"},
+  {name:"Queen Stakes",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Mile"},
+  {name:"Elm Stakes",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Dirt", length:"Mile"},
+  {name:"Kokura Kinen",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Turf", length:"Medium"},
+  {name:"Leopard Stakes",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Dirt", length:"Mile"},
+  {name:"Sekiya Kinen",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Turf", length:"Mile"},
+  {name:"Keeneland Cup",        grade:"G3", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Sprint"},
+  {name:"Kitakyushu Kinen",        grade:"G3", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Sprint"},
+  {name:"Sapporo Kinen",        grade:"G2", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Medium"},
+  {name:"Centaur Stakes",        grade:"G2", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Sprint"},
+  {name:"Keisei Hai Autumn Handicap",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Mile"},
+  {name:"Niigata Kinen",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Medium"},
+  {name:"Rose Stakes",        grade:"G2", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Mile"},
+  {name:"Shion Stakes",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Medium"},
+  {name:"All Comers",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
+  {name:"Kobe Shimbun Hai",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
+  {name:"Sirius Stakes",        grade:"G3", year:"Classic", month:"Late Sep",  surface:"Dirt", length:"Medium"},
   {name:"Sprinters Stakes",        grade:"G1", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Sprint"},
-  {name:"Shuka Sho",               grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
+  {name:"St. Lite Kinen",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
+  {name:"Fuchu Umamusume Stakes",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
+  {name:"Kyoto Daishoten",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Medium"},
+  {name:"Mainichi Okan",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
+  {name:"Fuji Stakes",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
   {name:"Kikuka Sho",              grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Long"},
+  {name:"Shuka Sho",               grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
+  {name:"Swan Stakes",               grade:"G2", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Sprint"},
   {name:"Tenno Sho (Autumn)",      grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
+  {name:"Copa Republica Argentina",        grade:"G2", year:"Classic",  month:"Early Nov", surface:"Turf", length:"Long"},
+  {name:"Fukushima Kinen",        grade:"G3", year:"Classic",  month:"Early Nov", surface:"Turf", length:"Medium"},
+  {name:"JBC Classic",             grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Medium"},
+  {name:"JBC Ladies Classic",      grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
+  {name:"JBC Sprint",      grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Sprint"},
+  {name:"Miyako Stakes",      grade:"G3", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
+  {name:"Musashino Stakes",      grade:"G3", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
   {name:"Queen Elizabeth II Cup",  grade:"G1", year:"Classic", month:"Early Nov", surface:"Turf", length:"Medium"},
-  {name:"Mile Championship",       grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Mile"},
   {name:"Japan Cup",               grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Medium"},
+  {name:"Keihan Hai",               grade:"G3", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Sprint"},
+  {name:"Mile Championship",       grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Mile"},
+  {name:"Capella Stakes",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Dirt", length:"Sprint"},
+  {name:"Challenge Cup",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Medium"},
   {name:"Champions Cup",           grade:"G1", year:"Classic", month:"Early Dec", surface:"Dirt", length:"Mile"},
+  {name:"Chunichi Shimbun Hai",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Medium"},
+  {name:"Stayers Stakes",           grade:"G2", year:"Classic", month:"Early Dec", surface:"Turf", length:"Long"},
+  {name:"Turquoise Stakes",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Mile"},
   {name:"Arima Kinen",             grade:"G1", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Long"},
+  {name:"Hanshin Cup",             grade:"G2", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Sprint"},
+  {name:"Tokyo Daishoten",         grade:"G1", year:"Classic",  month:"Late Dec",  surface:"Dirt", length:"Medium"},
+  //Senior Year
+  
   {name:"February Stakes",         grade:"G1", year:"Senior",  month:"Late Feb",  surface:"Dirt", length:"Mile"},
   {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Sprint"},
   {name:"Osaka Hai",               grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Medium"},
-  {name:"Japan Dirt Derby",        grade:"G1", year:"Senior",  month:"Early Jul", surface:"Dirt", length:"Medium"},
-  {name:"JBC Classic",             grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:"Medium"},
-  {name:"JBC Ladies Classic",      grade:"G1", year:"Senior",  month:"Early Nov", surface:"Dirt", length:"Mile"},
-  {name:"Tokyo Daishoten",         grade:"G1", year:"Senior",  month:"Late Dec",  surface:"Dirt", length:"Medium"},
-  {name:"Hanshin Juvenile Fillies (Dec)", grade:"G1", year:"Junior", month:"Early Dec", surface:"Turf", length:"Mile"},
+  {name:"Tenno Sho (Spring)",      grade:"G1", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Long"},
+  {name:"Victoria Mile",           grade:"G1", year:"Senior", month:"Early May", surface:"Turf", length:"Mile"},
+  
+
 ];
  
 const TITLES = [
@@ -267,7 +347,7 @@ function unique(arr){return[...new Set(arr)];}
  
 const YEARS    = ["Junior","Classic","Senior"];
 const SURFACES = ["Turf","Dirt"];
-const GRADES   = ["G1","G2","G3"];
+const GRADES   = ["G1","G2","G3","EX"];
 const MONTHS   = unique(G1_RACES.map(r=>r.month));
 const LENGTHS  = ["Sprint","Mile","Medium","Long"]
  
@@ -351,7 +431,7 @@ function renderDetailHeader(c){
   const av=document.getElementById("d-avatar");
   av.textContent=initials(c.name);av.style.background=c.color;av.style.color=c.text;
   document.getElementById("d-name").textContent=c.name;
-  document.getElementById("d-sub").textContent=`${raceWins} G1 wins · ${titleWins} titles`;
+  document.getElementById("d-sub").textContent=`${raceWins} Wins · ${titleWins} titles`;
   const ob=document.getElementById("d-own-btn");
   ob.textContent=d.owned?"✓ Owned":"Mark as owned";
   ob.className="own-btn-detail"+(d.owned?" owned":"");
