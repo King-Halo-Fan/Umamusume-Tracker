@@ -193,6 +193,12 @@ body {
   }
   .race-check.won { background: var(--teal); border-color: var(--teal); color: white; }
   .no-results { font-size: 13px; color: var(--text-prim); padding: 12px 0; text-align: center; }
-</style>
+  .collapse-btn {
+    font-size: 11px; padding: 2px 8px; border-radius: 20px;
+    border: 0.5px solid var(--border-light); background: var(--bg-prim);
+    cursor: pointer; color: var(--text-prim); font-family: inherit;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .collapse-btn:hover { border-color: var(--teal); color: var(--teal); }
   .race-check.won { background: var(--teal); border-color: var(--teal); color: white; }
 </style>
