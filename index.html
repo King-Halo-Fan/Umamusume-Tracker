@@ -84,8 +84,8 @@ async function bootstrap() {
   try {
     const [chars, races, titlesData] = await Promise.all([
       loadCSV("ImportFile/characters.csv"),
-      loadCSV("races.csv"),
-      loadCSV("titles.csv"),
+      loadCSV("ImportFile/races.csv"),
+      loadCSV("ImportFile/titles.csv"),
     ]);
     CHARS    = chars;
     G1_RACES = races;
