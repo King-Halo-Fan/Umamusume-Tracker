@@ -11,7 +11,11 @@
   <h1>Umamusume Pretty Derby Tracker</h1>
   <p class="subtitle">Track your characters and their race wins &amp; titles</p>
  
-  <div id="pin-screen" class="pin-screen">
+  <div id="loading-screen" class="pin-screen">
+    <p>Loading data…</p>
+  </div>
+ 
+  <div id="pin-screen" class="pin-screen" style="display:none">
     <h2>Enter your PIN</h2>
     <p>Choose any PIN to save your progress to the cloud. Use the same PIN on any browser to load it back.</p>
     <input class="pin-input" id="pin-input" type="password" maxlength="20" placeholder="••••" autocomplete="off" />
@@ -47,220 +51,54 @@
 const SUPABASE_URL = "https://rzcoksxxqggsweqdkzzb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_HH8gBjpd7CGeIpKzIGNu6g_YGz-oLFx";
  
-const CHARS = [
-  {name:"Special Week",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Silence Suzuka",color:"#F4C0D1",text:"#72243E"},
-  {name:"Tokai Teio",color:"#CED0FF",text:"#3C3489"},
-  {name:"Maruzensky",color:"#F5C4B3",text:"#712B13"},
-  {name:"Oguri Cap",color:"#FAC775",text:"#633806"},
-  {name:"Gold Ship",color:"#D3D1C7",text:"#444441"},
-  {name:"Vodka",color:"#F5C4B3",text:"#712B13"},
-  {name:"Daiwa Scarlet",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Taiki Shuttle",color:"#c8feda",text:"#8bf41b"},
-  {name:"Grass Wonder",color:"#9FE1CB",text:"#085041"},
-  {name:"Mejiro McQueen",color:"#C0DD97",text:"#3B6D11"},
-  {name:"El Condor Pasa",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Symboli Rudolf",color:"#D3D1C7",text:"#444441"},
-  {name:"Air Groove",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Mayano Top Gun",color:"#FAC775",text:"#633806"},
-  {name:"Mejiro Ryan",color:"#5ebabf",text:"#8389e3"},
-  {name:"Rice Shower",color:"#F4C0D1",text:"#72243E"},
-  {name:"Agnes Tachyon",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Winning Ticket",color:"#FAC775",text:"#633806"},
-  {name:"Sakura Bakushin O",color:"#e96dbe",text:"#a06a76"},
-  {name:"Super Creek",color:"#9FE1CB",text:"#085041"},
-  {name:"Haru Urara",color:"#F5C4B3",text:"#712B13"},
-  {name:"Matikanefukukitaru",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Nice Nature",color:"#943526",text:"#7887a0"},
-  {name:"King Halo",color:"#F4C0D1",text:"#72243E"},
-  {name:"T.M. Opera O",color:"#FAC775",text:"#633806"},
-  {name:"Mihono Bourbon",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Biwa Hayahide",color:"#CED0FF",text:"#3C3489"},
-  {name:"Curren Chan",color:"#F4C0D1",text:"#72243E"},
-  {name:"Narita Taishin",color:"#D3D1C7",text:"#444441"},
-  {name:"Smart Falcon",color:"#9FE1CB",text:"#085041"},
-  {name:"Narita Brian",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Seiun Sky",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Hishi Amazon",color:"#F5C4B3",text:"#712B13"},
-  {name:"Fuji Kiseki",color:"#9FE1CB",text:"#085041"},
-  {name:"Gold City",color:"#C0DD97",text:"#3B6D11"},
-  {name:"Meisho Doto",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Eishin Flash",color:"#FAC775",text:"#633806"},
-  {name:"Hishi Akebono",color:"#9FE1CB",text:"#085041"},
-  {name:"Agnes Digital",color:"#B5D4F4",text:"#0C447C"},
-  {name:"Kawakami Princess",color:"#F4C0D1",text:"#72243E"},
-  {name:"Manhattan Cafe",color:"#CED0FF",text:"#3C3489"},
-  {name:"Tosen Jordan",color:"#FAC775",text:"#633806"},
-  {name:"Mejiro Dober",color:"#F5C4B3",text:"#712B13"},
-  {name:"Fine Motion",color:"#CED0FF",text:"#3C3489"},
-  {name:"Tamamo Cross",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Sakura Chiyono O",color:"#F4C0D1",text:"#72243E"}, 
-  {name:"Mejiro Ardan",color:"#F7C1C1",text:"#791F1F"},
-  {name:"Admire Vega",color:"#3b30ef",text:"#55b8b6"},
-  {name:"Matikanetannhauser",color:"#7887a0",text:"#8389e3"},
-  {name:"Kitasan Black",color:"#D3D1C7",text:"#444441"},
-  {name:"Satono Diamond",color:"#CED0FF",text:"#3C3489"},
-  {name:"Mejiro Bright",color:"#7cc4f7",text:"#55b8b6"},
-  {name:"Nishino Flower",color:"#c0be0d",text:"#c8feda"},
-];
+// ── CSV loader ────────────────────────────────────────────────────────────────
+function parseCSV(text) {
+  const lines = text.trim().split("\n").map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(",").map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const vals = [];
+    let cur = "", inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      if (line[i] === '"') { inQ = !inQ; }
+      else if (line[i] === ',' && !inQ) { vals.push(cur.trim()); cur = ""; }
+      else { cur += line[i]; }
+    }
+    vals.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] ?? "");
+    return obj;
+  });
+}
  
-// grade, year, month, surface, length
-const G1_RACES = [
-  {name:"Hakodate Junior Stakes",                 grade:"G3", year:"Junior", month:"Late Jul", surface:"Turf", length:"Sprint"},
-  {name:"Niigata Junior Stakes",grade:"G3", year:"Junior",  month:"Late Aug", surface:"Turf", length:"Mile"},
-  {name:"Kokura Junior Stakes",                 grade:"G3", year:"Junior", month:"Early Sep", surface:"Turf", length:"Sprint"},
-  {name:"Sapporo Junior Stakes",grade:"G3", year:"Junior",  month:"Early Sep", surface:"Turf", length:"Mile"},
-  {name:"Saudi Arabia Royal Cup",grade:"G3", year:"Junior",  month:"Early Oct", surface:"Turf", length:"Mile"},
-  {name:"Artemis Stakes",grade:"G3", year:"Junior",  month:"Late Oct", surface:"Turf", length:"Mile"},
-  {name:"Daily Hai Junior Stakes",grade:"G2", year:"Junior",  month:"Early Nov", surface:"Turf", length:"Mile"},
-  {name:"Fantasy Stakes",                 grade:"G3", year:"Junior", month:"Early Nov", surface:"Turf", length:"Sprint"},
-  {name:"Keio Hai Junior Stakes",grade:"G2", year:"Junior",  month:"Early Nov", surface:"Turf", length:"Sprint"},
-  {name:"Kyoto Junior Stakes",                 grade:"G3", year:"Junior", month:"Late Nov", surface:"Turf", length:"Medium"},
-  {name:"Tokyo Sports Hai Junior Stakes",grade:"G3", year:"Junior",  month:"Late Nov", surface:"Turf", length:"Mile"},
-  {name:"Asahi Hai Futurity Stakes",grade:"G1",year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
-  {name:"Hanshin Juvenile Fillies",grade:"G1", year:"Junior",  month:"Early Dec", surface:"Turf", length:"Mile"},
-  {name:"Hopeful Stakes",          grade:"G1", year:"Junior",  month:"Late Dec",  surface:"Turf", length:"Medium"},
-  //Classic
-  {name:"Fairy Stakes",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Mile"},
-  {name:"Keisei Hai",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Medium"},
-  {name:"Shinzan Kinen",                 grade:"G3", year:"Classic", month:"Early Jan", surface:"Turf", length:"Mile"},
-  {name:"Kisaragi Sho",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
-  {name:"Kyodo News Hai",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
-  {name:"Queen Cup",                 grade:"G3", year:"Classic", month:"Early Feb", surface:"Turf", length:"Mile"},
-  {name:"Fillies' Revue",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Sprint"},
-  {name:"Tulip Sho",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Mile"},
-  {name:"Yayoi Sho",                 grade:"G2", year:"Classic", month:"Early Mar", surface:"Turf", length:"Medium"},
-  {name:"Falcon Stakes",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Sprint"},
-  {name:"Flower Cup",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
-  {name:"Mainichi Hai",                 grade:"G3", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
-  {name:"Spring Stakes",                 grade:"G2", year:"Classic", month:"Late Mar", surface:"Turf", length:"Mile"},
-  {name:"Arlington Cup",                 grade:"G3", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"}, 
-  {name:"New Zealand Trophy",                 grade:"G2", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"},
-  {name:"Oka Sho",                 grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Mile"},
-  {name:"Satsuki Sho",             grade:"G1", year:"Classic", month:"Early Apr", surface:"Turf", length:"Medium"},
-  {name:"Aoba Sho",             grade:"G2", year:"Classic", month:"Late Apr", surface:"Turf", length:"Medium"},
-  {name:"Flora Stakes",             grade:"G2", year:"Classic", month:"Late Apr", surface:"Turf", length:"Medium"},
-  {name:"Kyoto Shimbun Hai",            grade:"G2", year:"Classic", month:"Early May", surface:"Turf", length:"Medium"},
-  {name:"NHK Mile Cup",            grade:"G1", year:"Classic", month:"Early May", surface:"Turf", length:"Mile"},
-  {name:"Aoi Stakes",           grade:"G3", year:"Classic", month:"Late May",  surface:"Turf", length:"Sprint"},
-  {name:"Japanese Oaks",           grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
-  {name:"Japanese Derby",          grade:"G1", year:"Classic", month:"Late May",  surface:"Turf", length:"Medium"},
-  {name:"Epsom Cup",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Mile"},
-  {name:"Mermaid Stakes",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Medium"},
-  {name:"Naruo Kinen",            grade:"G3", year:"Classic", month:"Early Jun", surface:"Turf", length:"Medium"},
-  {name:"Yasuda Kinen",            grade:"G1", year:"Classic", month:"Early Jun", surface:"Turf", length:"Mile"},
-  {name:"Hakodate Sprint Stakes",        grade:"G3", year:"Classic", month:"Late Jun",  surface:"Turf", length:"Sprint"},
-  {name:"Takarazuka Kinen",        grade:"G1", year:"Classic", month:"Late Jun",  surface:"Turf", length:"Medium"},
-  {name:"Unicorn Stakes",        grade:"G3", year:"Classic", month:"Late Jun",  surface:"Dirt", length:"Mile"},
-  {name:"CBC Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Sprint"},
-  {name:"Hakodate Kinen",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Medium"},
-  {name:"Japan Dirt Derby",        grade:"G1", year:"Classic",  month:"Early Jul", surface:"Dirt", length:"Medium"},
-  {name:"Procyon Stakes",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Dirt", length:"Sprint"},
-  {name:"Radio Nikkei Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Mile"},
-  {name:"Tanabata Sho",        grade:"G3", year:"Classic", month:"Early Jul",  surface:"Turf", length:"Medium"},
-  {name:"Chukyo Kinen",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Mile"},
-  {name:"Ibis Summer Dash",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Sprint"},
-  {name:"Queen Stakes",        grade:"G3", year:"Classic", month:"Late Jul",  surface:"Turf", length:"Mile"},
-  {name:"Elm Stakes",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Dirt", length:"Mile"},
-  {name:"Kokura Kinen",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Turf", length:"Medium"},
-  {name:"Leopard Stakes",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Dirt", length:"Mile"},
-  {name:"Sekiya Kinen",        grade:"G3", year:"Classic", month:"Early Aug",  surface:"Turf", length:"Mile"},
-  {name:"Keeneland Cup",        grade:"G3", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Sprint"},
-  {name:"Kitakyushu Kinen",        grade:"G3", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Sprint"},
-  {name:"Sapporo Kinen",        grade:"G2", year:"Classic", month:"Late Aug",  surface:"Turf", length:"Medium"},
-  {name:"Centaur Stakes",        grade:"G2", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Sprint"},
-  {name:"Keisei Hai Autumn Handicap",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Mile"},
-  {name:"Niigata Kinen",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Medium"},
-  {name:"Rose Stakes",        grade:"G2", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Mile"},
-  {name:"Shion Stakes",        grade:"G3", year:"Classic", month:"Early Sep",  surface:"Turf", length:"Medium"},
-  {name:"All Comers",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
-  {name:"Kobe Shimbun Hai",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
-  {name:"Sirius Stakes",        grade:"G3", year:"Classic", month:"Late Sep",  surface:"Dirt", length:"Medium"},
-  {name:"Sprinters Stakes",        grade:"G1", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Sprint"},
-  {name:"St. Lite Kinen",        grade:"G2", year:"Classic", month:"Late Sep",  surface:"Turf", length:"Medium"},
-  {name:"Fuchu Umamusume Stakes",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
-  {name:"Kyoto Daishoten",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Medium"},
-  {name:"Mainichi Okan",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
-  {name:"Fuji Stakes",     grade:"G2", year:"Classic", month:"Early Oct",  surface:"Turf", length:"Mile"},
-  {name:"Kikuka Sho",              grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Long"},
-  {name:"Shuka Sho",               grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
-  {name:"Swan Stakes",               grade:"G2", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Sprint"},
-  {name:"Tenno Sho (Autumn)",      grade:"G1", year:"Classic", month:"Late Oct",  surface:"Turf", length:"Medium"},
-  {name:"Copa Republica Argentina",        grade:"G2", year:"Classic",  month:"Early Nov", surface:"Turf", length:"Long"},
-  {name:"Fukushima Kinen",        grade:"G3", year:"Classic",  month:"Early Nov", surface:"Turf", length:"Medium"},
-  {name:"JBC Classic",             grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Medium"},
-  {name:"JBC Ladies Classic",      grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
-  {name:"JBC Sprint",      grade:"G1", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Sprint"},
-  {name:"Miyako Stakes",      grade:"G3", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
-  {name:"Musashino Stakes",      grade:"G3", year:"Classic",  month:"Early Nov", surface:"Dirt", length:"Mile"},
-  {name:"Queen Elizabeth II Cup",  grade:"G1", year:"Classic", month:"Early Nov", surface:"Turf", length:"Medium"},
-  {name:"Japan Cup",               grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Medium"},
-  {name:"Keihan Hai",               grade:"G3", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Sprint"},
-  {name:"Mile Championship",       grade:"G1", year:"Classic", month:"Late Nov",  surface:"Turf", length:"Mile"},
-  {name:"Capella Stakes",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Dirt", length:"Sprint"},
-  {name:"Challenge Cup",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Medium"},
-  {name:"Champions Cup",           grade:"G1", year:"Classic", month:"Early Dec", surface:"Dirt", length:"Mile"},
-  {name:"Chunichi Shimbun Hai",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Medium"},
-  {name:"Stayers Stakes",           grade:"G2", year:"Classic", month:"Early Dec", surface:"Turf", length:"Long"},
-  {name:"Turquoise Stakes",           grade:"G3", year:"Classic", month:"Early Dec", surface:"Turf", length:"Mile"},
-  {name:"Arima Kinen",             grade:"G1", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Long"},
-  {name:"Hanshin Cup",             grade:"G2", year:"Classic", month:"Late Dec",  surface:"Turf", length:"Sprint"},
-  {name:"Tokyo Daishoten",         grade:"G1", year:"Classic",  month:"Late Dec",  surface:"Dirt", length:"Medium"},
-  //Senior Year
-  {name:"Aichi Hai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
-  {name:"Kyoto Kimpai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Mile"},
-  {name:"Nakayama Kimpai",         grade:"G3", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
-  {name:"Nikkei Shinshun Hai",         grade:"G2", year:"Senior",  month:"Early Jan",  surface:"Turf", length:"Medium"},
-  {name:"American JCC",         grade:"G2", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Medium"},
-  {name:"Negishi Stakes",         grade:"G3", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Sprint"},
-  {name:"Silk Road Stakes",         grade:"G3", year:"Senior",  month:"Late Jan",  surface:"Turf", length:"Sprint"},
-  {name:"Tokai Stakes",         grade:"G2", year:"Senior",  month:"Late Jan",  surface:"Dirt", length:"Mile"},
-  {name:"Kyoto Kinen",         grade:"G2", year:"Senior",  month:"Early Feb",  surface:"Turf", length:"Medium"},
-  {name:"Tokyo Shimbun Hai",         grade:"G3", year:"Senior",  month:"Early Feb",  surface:"Turf", length:"Mile"},
-  {name:"Diamond Stakes",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Long"},
-  {name:"February Stakes",         grade:"G1", year:"Senior",  month:"Late Feb",  surface:"Dirt", length:"Mile"},
-  {name:"Hankyu Hai",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Sprint"},
-  {name:"Kokura Daishoten",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Mile"},
-  {name:"Kyoto Umamusume Stakes",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Sprint"},
-  {name:"Nakayama Kinen",         grade:"G3", year:"Senior",  month:"Late Feb",  surface:"Turf", length:"Mile"},
-  {name:"Kinko Sho",         grade:"G2", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Medium"},
-  {name:"Nakayama Umamusume Stakes",         grade:"G3", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Mile"},
-  {name:"Ocean Stakes",         grade:"G3", year:"Senior",  month:"Early Mar",  surface:"Turf", length:"Sprint"},
-  {name:"Hanshin Daishoten",         grade:"G2", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Long"},
-  {name:"March Stakes",         grade:"G3", year:"Senior",  month:"Late Mar",  surface:"Dirt", length:"Mile"},
-  {name:"Nikkei Sho",         grade:"G2", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Long"},
-  {name:"Osaka Hai",               grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Medium"},
-  {name:"Takamatsunomiya Kinen",   grade:"G1", year:"Senior",  month:"Late Mar",  surface:"Turf", length:"Sprint"},
-  {name:"Antares Stakes",      grade:"G3", year:"Senior", month:"Early Apr",  surface:"Dirt", length:"Mile"},
-  {name:"Hanshin Umamusume Stakes",      grade:"G2", year:"Senior", month:"Early Apr",  surface:"Turf", length:"Mile"},
-  {name:"Lord Derby Challenge Trophy",      grade:"G3", year:"Senior", month:"Early Apr",  surface:"Turf", length:"Mile"},
-  {name:"Fukushima Umamusume Stakes",      grade:"G3", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Mile"},
-  {name:"Milers Cup",      grade:"G2", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Mile"},
-  {name:"Tenno Sho (Spring)",      grade:"G1", year:"Senior", month:"Late Apr",  surface:"Turf", length:"Long"},
-  {name:"Keio Hai Spring Cup",           grade:"G2", year:"Senior", month:"Early May", surface:"Turf", length:"Sprint"},
-  {name:"Niigata Daishoten",           grade:"G3", year:"Senior", month:"Early May", surface:"Turf", length:"Medium"},
-  {name:"Victoria Mile",           grade:"G1", year:"Senior", month:"Early May", surface:"Turf", length:"Mile"},
-  {name:"Heian Stakes",           grade:"G3", year:"Senior", month:"Late May", surface:"Dirt", length:"Medium"},
-  {name:"Teio Sho",           grade:"G1", year:"Senior", month:"Late Jun", surface:"Dirt", length:"Medium"},
-  //Finale
-  {name:"Ura Finale - Sprint",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Sprint"},
-  {name:"Ura Finale - Mile",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Mile"},
-  {name:"Ura Finale - Medium",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Medium"},
-  {name:"Ura Finale - Long",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Long"},
-  {name:"Ura Finale - Dirt",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Dirt", length:"Medium"},
-  {name:"TS Climax - Sprint",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Sprint"},
-  {name:"TS Climax - Mile",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Mile"},
-  {name:"TS Climax - Medium",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Medium"},
-  {name:"TS Climax - Long",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Turf", length:"Long"},
-  {name:"TS Climax - Dirt",           grade:"EX", year:"Senior", month:"Early Jan", surface:"Dirt", length:"Medium"},
-];
+async function loadCSV(path) {
+  const r = await fetch(path);
+  if (!r.ok) throw new Error(`Failed to load ${path}`);
+  return parseCSV(await r.text());
+}
  
-const TITLES = [
-  "Classic Triple Crown","Triple Tiara","Senior Spring Triple Crown",
-  "Senior Autumn Triple Crown","Spring & Autumn Tenno Sho","Spring & Autumn Grand Prix",
-  "Spring & Autumn Sprint Champions","Spring & Autumn Mile Champions",
-  "URA Finale Champion","All Comers Victor",
-];
+// ── Bootstrap: load all CSVs before showing anything ─────────────────────────
+let CHARS = [], G1_RACES = [], TITLES = [];
+ 
+async function bootstrap() {
+  try {
+    const [chars, races, titlesData] = await Promise.all([
+      loadCSV("data/characters.csv"),
+      loadCSV("data/races.csv"),
+      loadCSV("data/titles.csv"),
+    ]);
+    CHARS    = chars;
+    G1_RACES = races;
+    TITLES   = titlesData.map(r => r.title);
+ 
+    document.getElementById("loading-screen").style.display = "none";
+    document.getElementById("pin-screen").style.display     = "block";
+    initApp();
+  } catch (e) {
+    document.getElementById("loading-screen").innerHTML =
+      `<p style="color:#A32D2D">Failed to load data files. Make sure <code>data/characters.csv</code>, <code>data/races.csv</code>, and <code>data/titles.csv</code> exist.<br><br>${e.message}</p>`;
+  }
+}
  
 // ── Supabase ──────────────────────────────────────────────────────────────────
 async function hashPin(pin) {
@@ -286,8 +124,8 @@ async function dbSave(h, data) {
  
 // ── State ─────────────────────────────────────────────────────────────────────
 let pinHash=null, appData={}, currentChar=null, charSearch="", saveTimer=null;
-// filter state
 let fSearch="", fGrade=null, fYear=null, fMonth=null, fSurface=null, fLength=null;
+let racesCollapsed=false, titlesCollapsed=false;
  
 function initChar(n){if(!appData[n])appData[n]={owned:false,races:{},titles:{}};}
 function initials(n){return n.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();}
@@ -308,45 +146,53 @@ function scheduleSave(){
 }
  
 // ── PIN ───────────────────────────────────────────────────────────────────────
-document.getElementById("pin-btn").addEventListener("click",async()=>{
-  const pin=document.getElementById("pin-input").value.trim();
-  const errEl=document.getElementById("pin-error");
-  if(!pin){errEl.textContent="Please enter a PIN.";errEl.style.display="block";return;}
-  const btn=document.getElementById("pin-btn");
-  btn.disabled=true;btn.textContent="Loading…";errEl.style.display="none";
-  try{
-    pinHash=await hashPin(pin);
-    const saved=await dbLoad(pinHash);
-    appData=saved||{};
-    document.getElementById("pin-screen").style.display="none";
-    document.getElementById("main-app").style.display="block";
-    setSyncStatus(saved?"Loaded from cloud ✓":"New save — start tracking!");
+function initApp() {
+  document.getElementById("pin-btn").addEventListener("click",async()=>{
+    const pin=document.getElementById("pin-input").value.trim();
+    const errEl=document.getElementById("pin-error");
+    if(!pin){errEl.textContent="Please enter a PIN.";errEl.style.display="block";return;}
+    const btn=document.getElementById("pin-btn");
+    btn.disabled=true;btn.textContent="Loading…";errEl.style.display="none";
+    try{
+      pinHash=await hashPin(pin);
+      const saved=await dbLoad(pinHash);
+      appData=saved||{};
+      document.getElementById("pin-screen").style.display="none";
+      document.getElementById("main-app").style.display="block";
+      setSyncStatus(saved?"Loaded from cloud ✓":"New save — start tracking!");
+      renderGrid();
+    }catch{
+      errEl.textContent="Could not connect. Check your internet and try again.";
+      errEl.style.display="block";btn.disabled=false;btn.textContent="Load / create save";
+    }
+  });
+  document.getElementById("pin-input").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("pin-btn").click();});
+  document.getElementById("switch-pin-btn").addEventListener("click",()=>{
+    pinHash=null;appData={};currentChar=null;charSearch="";
+    document.getElementById("main-app").style.display="none";
+    document.getElementById("chars-view").style.display="block";
+    document.getElementById("detail-view").style.display="none";
+    document.getElementById("pin-input").value="";
+    document.getElementById("pin-screen").style.display="block";
+  });
+  document.getElementById("search-input").addEventListener("input",e=>{charSearch=e.target.value;renderGrid();});
+  document.getElementById("back-btn").addEventListener("click",()=>{
+    document.getElementById("detail-view").style.display="none";
+    document.getElementById("chars-view").style.display="block";
     renderGrid();
-  }catch{
-    errEl.textContent="Could not connect. Check your internet and try again.";
-    errEl.style.display="block";btn.disabled=false;btn.textContent="Load / create save";
-  }
-});
-document.getElementById("pin-input").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("pin-btn").click();});
-document.getElementById("switch-pin-btn").addEventListener("click",()=>{
-  pinHash=null;appData={};currentChar=null;charSearch="";
-  document.getElementById("main-app").style.display="none";
-  document.getElementById("chars-view").style.display="block";
-  document.getElementById("detail-view").style.display="none";
-  document.getElementById("pin-input").value="";
-  document.getElementById("pin-screen").style.display="block";
-});
+  });
+}
  
 // ── Grid ──────────────────────────────────────────────────────────────────────
- function avatarHTML(c, size = 36) {
-  const slug = c.name.toLowerCase().replace(/\./g, "").replace(/\s+/g, "_");
-  const src = `Icons/${slug}.png`;
+function avatarHTML(c, size=36){
+  const slug=c.name.toLowerCase().replace(/\./g,"").replace(/\s+/g,"_");
+  const src=`Icons/${slug}.png`;
   return `<div class="char-avatar" style="background:${c.color};color:${c.text};overflow:hidden;">
     <img src="${src}" width="${size}" height="${size}" style="object-fit:cover;width:100%;height:100%;"
       onerror="this.style.display='none';this.parentElement.textContent='${initials(c.name)}';"
     />
   </div>`;
-} 
+}
 function renderGrid(){
   const grid=document.getElementById("char-grid");
   const q=charSearch.toLowerCase();
@@ -372,22 +218,21 @@ function renderGrid(){
     });
   });
 }
-document.getElementById("search-input").addEventListener("input",e=>{charSearch=e.target.value;renderGrid();});
- function sortChars(arr){
+function sortChars(arr){
   return arr.slice().sort((a,b)=>{
-    const aOwned = appData[a.name]?.owned ? 0 : 1;
-    const bOwned = appData[b.name]?.owned ? 0 : 1;
-    return aOwned - bOwned;
+    const aOwned=appData[a.name]?.owned?0:1;
+    const bOwned=appData[b.name]?.owned?0:1;
+    return aOwned-bOwned;
   });
 }
+ 
 // ── Filters ───────────────────────────────────────────────────────────────────
 function unique(arr){return[...new Set(arr)];}
- 
 const YEARS    = ["Junior","Classic","Senior"];
 const SURFACES = ["Turf","Dirt"];
 const GRADES   = ["G1","G2","G3","EX"];
-const MONTHS   = unique(G1_RACES.map(r=>r.month));
-const LENGTHS  = ["Sprint","Mile","Medium","Long"]
+const LENGTHS  = ["Sprint","Mile","Medium","Long"];
+function getMonths(){ return unique(G1_RACES.map(r=>r.month)); }
  
 function filteredRaces(){
   const q=fSearch.toLowerCase();
@@ -401,19 +246,16 @@ function filteredRaces(){
     return true;
   });
 }
- 
 function hasActiveFilter(){
   return fSearch||fGrade||fYear||fMonth||fSurface||fLength;
 }
- 
 function renderFilters(){
   const wrap=document.getElementById("d-filters");
-  const chipRow=(label,options,current,setter)=>`
+  const chipRow=(label,options,current)=>`
     <div class="filter-row">
       <span class="filter-label">${label}</span>
-      ${options.map(o=>`<button class="filter-chip ${current===o?'active':''}" data-filter-label="${label}" data-filter-val="${o}">${o}${label==='Length'?'':''}</button>`).join("")}
+      ${options.map(o=>`<button class="filter-chip ${current===o?'active':''}" data-filter-label="${label}" data-filter-val="${o}">${o}</button>`).join("")}
     </div>`;
- 
   wrap.innerHTML=`<div class="filters-wrap">
     <div class="filters-title">Filter races</div>
     <div class="filter-row">
@@ -421,19 +263,17 @@ function renderFilters(){
       <input class="filter-search" id="f-search" placeholder="Race name…" value="${fSearch}" />
       ${hasActiveFilter()?`<button class="filter-clear" id="f-clear">Clear all</button>`:''}
     </div>
-    ${chipRow("Grade",   GRADES,   fGrade,   v=>fGrade=v)}
-    ${chipRow("Year",    YEARS,    fYear,    v=>fYear=v)}
-    ${chipRow("Month",   MONTHS,   fMonth,   v=>fMonth=v)}
-    ${chipRow("Surface", SURFACES, fSurface, v=>fSurface=v)}
-    ${chipRow("Length",  LENGTHS,  fLength,  v=>fLength=v)}
+    ${chipRow("Grade",   GRADES,      fGrade)}
+    ${chipRow("Year",    YEARS,       fYear)}
+    ${chipRow("Month",   getMonths(), fMonth)}
+    ${chipRow("Surface", SURFACES,    fSurface)}
+    ${chipRow("Length",  LENGTHS,     fLength)}
   </div>`;
- 
   document.getElementById("f-search").addEventListener("input",e=>{fSearch=e.target.value;renderDetailRaces(CHARS.find(x=>x.name===currentChar));renderFilters();});
   document.getElementById("f-clear")?.addEventListener("click",()=>{
     fSearch="";fGrade=null;fYear=null;fMonth=null;fSurface=null;fLength=null;
     renderDetailRaces(CHARS.find(x=>x.name===currentChar));renderFilters();
   });
- 
   wrap.querySelectorAll(".filter-chip").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const val=btn.dataset.filterVal;
@@ -453,6 +293,7 @@ function renderFilters(){
 function showDetail(name){
   currentChar=name;initChar(name);
   fSearch="";fGrade=null;fYear=null;fMonth=null;fSurface=null;fLength=null;
+  racesCollapsed=false;titlesCollapsed=false;
   document.getElementById("chars-view").style.display="none";
   document.getElementById("detail-view").style.display="block";
   const c=CHARS.find(x=>x.name===name);
@@ -461,12 +302,11 @@ function showDetail(name){
   renderDetailRaces(c);
   renderDetailTitles(c);
 }
- 
 function renderDetailHeader(c){
   const d=appData[c.name];
   const raceWins=Object.values(d.races||{}).filter(Boolean).length;
   const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
-  document.getElementById("d-avatar").innerHTML = avatarHTML(c);
+  document.getElementById("d-avatar").innerHTML=avatarHTML(c);
   document.getElementById("d-name").textContent=c.name;
   document.getElementById("d-sub").textContent=`${raceWins} Wins · ${titleWins} titles`;
   const ob=document.getElementById("d-own-btn");
@@ -474,7 +314,6 @@ function renderDetailHeader(c){
   ob.className="own-btn-detail"+(d.owned?" owned":"");
   ob.onclick=()=>{d.owned=!d.owned;scheduleSave();renderDetailHeader(c);};
 }
- 
 function tagHTML(r){
   return`<span class="tag tag-grade-${r.grade}">${r.grade}</span>
          <span class="tag tag-year-${r.year}">${r.year}</span>
@@ -482,55 +321,71 @@ function tagHTML(r){
          <span class="tag tag-surface-${r.surface}">${r.surface}</span>
          <span class="tag tag-length">${r.length}</span>`;
 }
- 
 function renderDetailRaces(c){
   const d=appData[c.name];
   const races=filteredRaces();
   const totalWon=Object.values(d.races||{}).filter(Boolean).length;
   const pct=Math.round(totalWon/G1_RACES.length*100);
- 
   document.getElementById("d-races-section").innerHTML=`
     <div class="section-title">
-      Wins — ${totalWon} / ${G1_RACES.length} total
-      <span class="section-pct">${pct}%</span>
+      <span>Wins — ${totalWon} / ${G1_RACES.length} total</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-pct">${pct}%</span>
+        <button class="collapse-btn" id="races-collapse-btn">${racesCollapsed?'▶ Show':'▼ Hide'}</button>
+      </div>
     </div>
-    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
-    ${races.length===0
-      ? `<div class="no-results">No races match your filters.</div>`
-      : `<div class="race-list">${races.map(r=>`
-          <div class="race-row">
-            <span class="race-name">${r.name}</span>
-            <div class="race-tags">${tagHTML(r)}</div>
-            <div class="race-check ${d.races[r.name]?'won':''}" data-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r.name]}">${d.races[r.name]?'✓':''}</div>
-          </div>`).join("")}
-        </div>`
-    }`;
- 
+    <div id="races-body" ${racesCollapsed?'style="display:none"':''}>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
+      ${races.length===0
+        ?`<div class="no-results">No races match your filters.</div>`
+        :`<div class="race-list">${races.map(r=>`
+            <div class="race-row">
+              <span class="race-name">${r.name}</span>
+              <div class="race-tags">${tagHTML(r)}</div>
+              <div class="race-check ${d.races[r.name]?'won':''}" data-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r.name]}">${d.races[r.name]?'✓':''}</div>
+            </div>`).join("")}
+          </div>`
+      }
+    </div>`;
+  document.getElementById("races-collapse-btn").addEventListener("click",()=>{
+    racesCollapsed=!racesCollapsed;
+    renderDetailRaces(c);
+  });
   document.querySelectorAll("[data-race]").forEach(el=>{
     const go=()=>{
       d.races[el.dataset.race]=!d.races[el.dataset.race];
-      scheduleSave();renderDetailHeader(c);renderDetailRaces(c);;
+      scheduleSave();renderDetailHeader(c);renderDetailRaces(c);
     };
     el.addEventListener("click",go);
     el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
   });
 }
- 
 function renderDetailTitles(c){
   const d=appData[c.name];
   const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
   const tPct=Math.round(titleWins/TITLES.length*100);
   document.getElementById("d-titles-section").innerHTML=`
-    <div class="section-title">Epithets — ${titleWins} / ${TITLES.length} <span class="section-pct">${tPct}%</span></div>
-    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
-    <div class="race-list">${TITLES.map(t=>`
-      <div class="race-row">
-        <span class="race-name">${t}</span>
-        <div class="race-tags"><span class="tag tag-grade-G1" style="background:#EEEDFE;color:#3C3489">Title</span></div>
-        <div class="race-check ${d.titles[t]?'won':''}" data-title="${t}" tabindex="0" role="checkbox" aria-checked="${!!d.titles[t]}">${d.titles[t]?'✓':''}</div>
-      </div>`).join("")}
+    <div class="section-title">
+      <span>Epithets — ${titleWins} / ${TITLES.length}</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="section-pct">${tPct}%</span>
+        <button class="collapse-btn" id="titles-collapse-btn">${titlesCollapsed?'▶ Show':'▼ Hide'}</button>
+      </div>
+    </div>
+    <div id="titles-body" ${titlesCollapsed?'style="display:none"':''}>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
+      <div class="race-list">${TITLES.map(t=>`
+        <div class="race-row">
+          <span class="race-name">${t}</span>
+          <div class="race-tags"><span class="tag tag-grade-G1" style="background:#EEEDFE;color:#3C3489">Title</span></div>
+          <div class="race-check ${d.titles[t]?'won':''}" data-title="${t}" tabindex="0" role="checkbox" aria-checked="${!!d.titles[t]}">${d.titles[t]?'✓':''}</div>
+        </div>`).join("")}
+      </div>
     </div>`;
- 
+  document.getElementById("titles-collapse-btn").addEventListener("click",()=>{
+    titlesCollapsed=!titlesCollapsed;
+    renderDetailTitles(c);
+  });
   document.querySelectorAll("[data-title]").forEach(el=>{
     const go=()=>{
       d.titles[el.dataset.title]=!d.titles[el.dataset.title];
@@ -541,11 +396,8 @@ function renderDetailTitles(c){
   });
 }
  
-document.getElementById("back-btn").addEventListener("click",()=>{
-  document.getElementById("detail-view").style.display="none";
-  document.getElementById("chars-view").style.display="block";
-  renderGrid();
-});
+// ── Start ─────────────────────────────────────────────────────────────────────
+bootstrap();
 </script>
 </body>
 </html>
