@@ -83,9 +83,9 @@ let CHARS = [], G1_RACES = [], TITLES = [];
 async function bootstrap() {
   try {
     const [chars, races, titlesData] = await Promise.all([
-      loadCSV("data/characters.csv"),
-      loadCSV("data/races.csv"),
-      loadCSV("data/titles.csv"),
+      loadCSV("ImportFile/characters.csv"),
+      loadCSV("races.csv"),
+      loadCSV("titles.csv"),
     ]);
     CHARS    = chars;
     G1_RACES = races;
@@ -96,7 +96,7 @@ async function bootstrap() {
     initApp();
   } catch (e) {
     document.getElementById("loading-screen").innerHTML =
-      `<p style="color:#A32D2D">Failed to load data files. Make sure <code>data/characters.csv</code>, <code>data/races.csv</code>, and <code>data/titles.csv</code> exist.<br><br>${e.message}</p>`;
+      `<p style="color:#A32D2D">Failed to load data files. Make sure <code>characters.csv</code>, <code>races.csv</code>, and <code>titles.csv</code> exist.<br><br>${e.message}</p>`;
   }
 }
  
