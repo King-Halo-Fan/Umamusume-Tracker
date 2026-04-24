@@ -238,6 +238,8 @@ const MONTHS = [
   "Early Jul","Late Jul","Early Aug","Late Aug","Early Sep","Late Sep",
   "Early Oct","Late Oct","Early Nov","Late Nov","Early Dec","Late Dec"
 ];
+let fWon = null; // null = show all, true = won only, false = not won only
+
 function getMonths(){
   const inData = new Set(G1_RACES.map(r => r.month));
   return MONTHS.filter(m => inData.has(m));
@@ -245,18 +247,20 @@ function getMonths(){
  
 function filteredRaces(){
   const q=fSearch.toLowerCase();
+  const d = appData[currentChar] || {};
   return G1_RACES.filter(r=>{
     if(fGrade   && r.grade   !==fGrade)   return false;
     if(fYear    && r.year    !==fYear)    return false;
     if(fMonth   && r.month   !==fMonth)   return false;
     if(fSurface && r.surface !==fSurface) return false;
     if(fLength  && r.length  !==fLength)  return false;
+    if (fWon !== null && !!d.races?.[r.name] !== fWon) return false;
     if(q && !r.name.toLowerCase().includes(q)) return false;
     return true;
   });
 }
 function hasActiveFilter(){
-  return fSearch||fGrade||fYear||fMonth||fSurface||fLength;
+  return fSearch || fGrade || fYear || fMonth || fSurface || fLength || fWon !== null;
 }
 function renderFilters(){
   const wrap=document.getElementById("d-filters");
@@ -277,12 +281,13 @@ function renderFilters(){
     ${chipRow("Month",   getMonths(), fMonth)}
     ${chipRow("Surface", SURFACES,    fSurface)}
     ${chipRow("Length",  LENGTHS,     fLength)}
+    ${chipRow("Won", ["Won", "Not Won"], fWon === true ? "Won" : fWon === false ? "Not Won" : null)}
   </div>`;
   document.getElementById("f-search").addEventListener("input",e=>{fSearch=e.target.value;renderDetailRaces(CHARS.find(x=>x.name===currentChar));renderFilters();});
-  document.getElementById("f-clear")?.addEventListener("click",()=>{
-    fSearch="";fGrade=null;fYear=null;fMonth=null;fSurface=null;fLength=null;
+document.getElementById("f-clear")?.addEventListener("click",()=>{
+    fSearch="";fGrade=null;fYear=null;fMonth=null;fSurface=null;fLength=null;fWon=null;
     renderDetailRaces(CHARS.find(x=>x.name===currentChar));renderFilters();
-  });
+});
   wrap.querySelectorAll(".filter-chip").forEach(btn=>{
     btn.addEventListener("click",()=>{
       const val=btn.dataset.filterVal;
@@ -292,6 +297,8 @@ function renderFilters(){
       if(label==="Month")   fMonth  =(fMonth  ===val?null:val);
       if(label==="Surface") fSurface=(fSurface===val?null:val);
       if(label==="Length")  fLength =(fLength ===val?null:val);
+      if (label === "Won") fWon = (val === "Won") ? (fWon === true ? null : true)
+                          : (fWon === false ? null : false);
       renderDetailRaces(CHARS.find(x=>x.name===currentChar));
       renderFilters();
     });
@@ -306,6 +313,7 @@ function showDetail(name){
   document.getElementById("chars-view").style.display="none";
   document.getElementById("detail-view").style.display="block";
   const c=CHARS.find(x=>x.name===name);
+  fWon = null;
   renderDetailHeader(c);
   renderFilters();
   renderDetailRaces(c);
