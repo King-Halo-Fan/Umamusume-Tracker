@@ -404,10 +404,10 @@ function renderDetailTitles(c){
     renderDetailTitles(c);
   });
   document.querySelectorAll("[data-title]").forEach(el=>{
-    const go=()=>{
-      d.titles[el.dataset.title]=!d.titles[el.dataset.title];
-      scheduleSave();renderDetailHeader(c);renderDetailTitles(c);
-    };
+const go=()=>{
+  d.titles[el.dataset.title]=!d.titles[el.dataset.title];
+  scheduleSave(); renderDetailHeader(c); renderDetailTitles(c); renderGrid(); // ← add this
+};
     el.addEventListener("click",go);
     el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
   });
