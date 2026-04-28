@@ -410,7 +410,7 @@ function renderDetailTitles(c){
       </div>
       ${visibleTitles.length===0
         ?`<div class="no-results">No titles match your filter.</div>`
-      <div class="race-list">${TITLES.map(t=>`
+      :`<div class="race-list">${visibleTitles.map(t=>`
         <div class="race-row">
           <span class="race-name">${t}</span>
           <div class="race-tags"><span class="tag tag-grade-G1" style="background:#EEEDFE;color:#3C3489">Title</span></div>
