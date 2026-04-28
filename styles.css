@@ -3,7 +3,7 @@
     --bg-prim: #F9F6EE;
     --text-prim: #0D0D0D;
     --border-light: rgba(0,0,0,0.12);
-    --border-mid: rgba(0,0,0,0);
+    --border-mid: rgba(0,0,0,0.35);
     --radius-md: 8px;
     --radius-lg: 12px;
     --teal: #1D9E75;
@@ -93,7 +93,7 @@ body {
   .char-wins { font-size: 11px; color: var(--text-prim); margin-top: 2px; }
   .own-toggle {
     width: 100%; padding: 5px; font-size: 11px;
-    border: 0.5px solid var(--border-mid); border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-mid); border-radius: var(--radius-md);
     background: transparent; cursor: pointer; color: var(--text-prim); font-family: inherit;
     margin-top: 8px;
   }
@@ -187,7 +187,7 @@ body {
   .tag-length { background: var(--bg-prim); color: var(--text-prim); }
   .tag-month { background: var(--bg-prim); color: var(--text-prim); }
   .race-check {
-    width: 22px; height: 22px; border-radius: 5px; border: 0.5px solid var(--border-mid);
+    width: 22px; height: 22px; border-radius: 5px; border: 1.5px solid var(--border-mid);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; background: transparent; font-size: 12px; font-weight: 500; color: transparent;
   }
