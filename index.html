@@ -239,7 +239,8 @@ const MONTHS = [
   "Early Oct","Late Oct","Early Nov","Late Nov","Early Dec","Late Dec"
 ];
 let fWon = null; // null = show all, true = won only, false = not won only
-
+let tFilter = null; // null = show all titles, true = checked only, false = unchecked only
+  
 function getMonths(){
   const inData = new Set(G1_RACES.map(r => r.month));
   return MONTHS.filter(m => inData.has(m));
@@ -314,6 +315,7 @@ function showDetail(name){
   document.getElementById("detail-view").style.display="block";
   const c=CHARS.find(x=>x.name===name);
   fWon = null;
+  tFilter = null;
   renderDetailHeader(c);
   renderFilters();
   renderDetailRaces(c);
@@ -381,6 +383,15 @@ function renderDetailTitles(c){
   const d=appData[c.name];
   const titleWins=Object.values(d.titles||{}).filter(Boolean).length;
   const tPct=Math.round(titleWins/TITLES.length*100);
+  const visibleTitles = TITLES.filter(t => {
+    if (tFilter === true  && !d.titles[t]) return false;
+    if (tFilter === false &&  d.titles[t]) return false;
+    return true;
+  });
+    const tFilterChip = (label, val) => {
+    const active = tFilter === val;
+    return `<button class="filter-chip ${active?'active':''}" data-tfilter="${label}">${label}</button>`;
+  };
   document.getElementById("d-titles-section").innerHTML=`
     <div class="section-title">
       <span>Epithets — ${titleWins} / ${TITLES.length}</span>
@@ -391,6 +402,14 @@ function renderDetailTitles(c){
     </div>
     <div id="titles-body" ${titlesCollapsed?'style="display:none"':''}>
       <div class="progress-bar-wrap"><div class="progress-bar" style="width:${tPct}%"></div></div>
+      <div class="filter-row" style="margin-bottom:10px">
+        <span class="filter-label">Filter</span>
+        ${tFilterChip("Checked", true)}
+        ${tFilterChip("Not Checked", false)}
+        ${tFilter!==null?`<button class="filter-clear" id="t-filter-clear">Clear</button>`:''}
+      </div>
+      ${visibleTitles.length===0
+        ?`<div class="no-results">No titles match your filter.</div>`
       <div class="race-list">${TITLES.map(t=>`
         <div class="race-row">
           <span class="race-name">${t}</span>
@@ -402,6 +421,17 @@ function renderDetailTitles(c){
   document.getElementById("titles-collapse-btn").addEventListener("click",()=>{
     titlesCollapsed=!titlesCollapsed;
     renderDetailTitles(c);
+  });
+    document.getElementById("t-filter-clear")?.addEventListener("click",()=>{
+    tFilter=null; renderDetailTitles(c);
+  });
+  document.querySelectorAll("[data-tfilter]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const label=btn.dataset.tfilter;
+      const val = label==="Checked" ? true : false;
+      tFilter = (tFilter===val ? null : val);
+      renderDetailTitles(c);
+    });
   });
   document.querySelectorAll("[data-title]").forEach(el=>{
 const go=()=>{
