@@ -416,7 +416,7 @@ function renderDetailTitles(c){
           <div class="race-tags"><span class="tag tag-grade-G1" style="background:#EEEDFE;color:#3C3489">Title</span></div>
           <div class="race-check ${d.titles[t]?'won':''}" data-title="${t}" tabindex="0" role="checkbox" aria-checked="${!!d.titles[t]}">${d.titles[t]?'✓':''}</div>
         </div>`).join("")}
-      </div>
+      </div>`}
     </div>`;
   document.getElementById("titles-collapse-btn").addEventListener("click",()=>{
     titlesCollapsed=!titlesCollapsed;
