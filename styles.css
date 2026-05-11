@@ -201,4 +201,39 @@ body {
   }
   .collapse-btn:hover { border-color: var(--teal); color: var(--teal); }
   .race-check.won { background: var(--teal); border-color: var(--teal); color: white; }
+
+  /* Sort mode toggle */
+  .sort-mode-btn {
+    width: 100%; margin-top: 6px; padding: 5px 12px; font-size: 11px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    background: var(--bg-prim); color: var(--text-prim); cursor: pointer;
+    font-family: inherit; white-space: nowrap;
+  }
+  .sort-mode-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .char-card[draggable="true"] { cursor: grab; }
+  .char-card[draggable="true"]:active { cursor: grabbing; }
+  .char-card.dragging { opacity: 0.4; border-style: dashed; }
+
+  /* Epithet descriptions */
+  .title-name-wrap { flex: 1; min-width: 120px; display: flex; flex-direction: column; gap: 2px; }
+  .title-desc { font-size: 11px; color: #777; line-height: 1.4; }
+
+  /* Story events */
+  .story-event-row { flex-direction: column; align-items: stretch; gap: 0; }
+  .story-event-main { display: flex; align-items: center; gap: 8px; width: 100%; }
+  .notes-toggle {
+    margin-left: auto; flex-shrink: 0; font-size: 11px; padding: 2px 8px;
+    border-radius: 20px; border: 0.5px solid var(--border-light);
+    background: var(--bg-prim); color: var(--text-prim); cursor: pointer;
+    font-family: inherit; white-space: nowrap;
+  }
+  .notes-toggle:hover { border-color: var(--teal); color: var(--teal); }
+  .story-notes-wrap { width: 100%; margin-top: 8px; }
+  .story-notes {
+    width: 100%; min-height: 64px; padding: 6px 8px; font-size: 12px;
+    border: 0.5px solid var(--border-light); border-radius: var(--radius-md);
+    background: var(--bg-prim); color: var(--text-prim); font-family: inherit;
+    resize: vertical; outline: none; line-height: 1.5;
+  }
+  .story-notes:focus { border-color: var(--teal); }
 </style>
