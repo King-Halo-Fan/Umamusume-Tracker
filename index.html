@@ -205,14 +205,50 @@ function initApp() {
 }
 
 // ── Grid ──────────────────────────────────────────────────────────────────────
-function avatarHTML(c, size=36){
-  const slug=c.name.toLowerCase().replace(/\./g,"").replace(/\s+/g,"_");
-  const src=`Icons/${slug}.png`;
-  return `<div class="char-avatar" style="background:${c.color};color:${c.text};overflow:hidden;">
+function getSlug(name){ return name.toLowerCase().replace(/\./g,"").replace(/\s+/g,"_"); }
+function getCostumes(c){
+  const base = { label: "Default", color: c.color, text: c.text, slug: getSlug(c.name) };
+  const alts = [];
+  let i = 1;
+  while (c[`alt${i}_label`]) {
+    const label = c[`alt${i}_label`];
+    alts.push({
+      label,
+      color: c[`alt${i}_color`] || c.color,
+      text:  c[`alt${i}_text`]  || c.text,
+      slug:  getSlug(c.name) + "_" + label.toLowerCase().replace(/\s+/g,"_"),
+    });
+    i++;
+  }
+  return [base, ...alts];
+}
+function currentCostumeIdx(name){
+  return appData[name]?.costumeIdx || 0;
+}
+function avatarHTML(c, size=36, showCycleBtn=false){
+  const costumes = getCostumes(c);
+  const idx = currentCostumeIdx(c.name);
+  const costume = costumes[Math.min(idx, costumes.length-1)];
+  const src = `Icons/${costume.slug}.png`;
+  const cycleBtn = (costumes.length > 1 && showCycleBtn)
+    ? `<button class="costume-cycle-btn" data-cycle="${c.name}" title="Swap costume (${costume.label})">⟳</button>`
+    : "";
+  return `<div class="char-avatar" style="background:${costume.color};color:${costume.text};overflow:hidden;position:relative;">
     <img src="${src}" width="${size}" height="${size}" style="object-fit:cover;width:100%;height:100%;"
-      onerror="this.style.display='none';this.parentElement.textContent='${initials(c.name)}';"
+      onerror="this.style.display=\'none\';this.parentElement.querySelector(\'span.avatar-initials\').style.display=\'flex\';"
     />
+    <span class="avatar-initials" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;">${initials(c.name)}</span>
+    ${cycleBtn}
   </div>`;
+}
+function cycleCostume(name){
+  const c = CHARS.find(x => x.name === name);
+  if (!c) return;
+  initChar(name);
+  const costumes = getCostumes(c);
+  const cur = currentCostumeIdx(name);
+  appData[name].costumeIdx = (cur + 1) % costumes.length;
+  scheduleSave();
 }
 function renderGrid(){
   const grid=document.getElementById("char-grid");
@@ -225,7 +261,7 @@ function renderGrid(){
     const d=appData[c.name]||{},w=getWins(c.name);
     return `<div class="char-card ${d.owned?'owned':''}" data-name="${c.name}" tabindex="0"${isCustom?' draggable="true"':''}>
       <div class="char-header">
-         ${avatarHTML(c)}
+         ${avatarHTML(c, 36, true)}
         <div><div class="char-name">${c.name}</div><div class="char-wins">${w} win${w!==1?'s':''} logged</div></div>
       </div>
       <button class="own-toggle" data-own="${c.name}">${d.owned?'✓ Owned':'Mark as owned'}</button>
@@ -250,6 +286,13 @@ function renderGrid(){
         }
       });
     }
+  });
+  grid.querySelectorAll("[data-cycle]").forEach(btn=>{
+    btn.addEventListener("click",e=>{
+      e.stopPropagation();
+      cycleCostume(btn.dataset.cycle);
+      renderGrid();
+    });
   });
   grid.querySelectorAll("[data-own]").forEach(btn=>{
     btn.addEventListener("click",e=>{
@@ -378,13 +421,18 @@ function renderDetailHeader(c){
   const storyEvents=STORY_EVENTS[c.name]||[];
   const storyDone=storyEvents.filter(e=>d.storyEvents?.[e]?.done).length;
   const storySub=storyEvents.length?` · ${storyDone}/${storyEvents.length} Story`:'';
-  document.getElementById("d-avatar").innerHTML=avatarHTML(c);
+  document.getElementById("d-avatar").innerHTML=avatarHTML(c, 36, true);
   document.getElementById("d-name").textContent=c.name;
   document.getElementById("d-sub").textContent=`${raceWins} Wins · ${titleWins} Epithets${storySub}`;
   const ob=document.getElementById("d-own-btn");
   ob.textContent=d.owned?"✓ Owned":"Mark as owned";
   ob.className="own-btn-detail"+(d.owned?" owned":"");
   ob.onclick=()=>{d.owned=!d.owned;scheduleSave();renderDetailHeader(c);};
+  document.querySelector("#d-avatar [data-cycle]")?.addEventListener("click", e=>{
+    e.stopPropagation();
+    cycleCostume(c.name);
+    renderDetailHeader(c);
+  });
 }
 function tagHTML(r){
   return`<span class="tag tag-grade-${r.grade}">${r.grade}</span>
