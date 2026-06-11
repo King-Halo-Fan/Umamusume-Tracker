@@ -630,3 +630,30 @@ h1 {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(139,107,174,0.25); border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(139,107,174,0.45); }
+
+/* ── Costume cycle button ── */
+.costume-cycle-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.85);
+  color: var(--purple-dark, #3C3489);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: background 0.15s, transform 0.15s;
+  z-index: 2;
+}
+.costume-cycle-btn:hover {
+  background: rgba(255,255,255,1);
+  transform: rotate(90deg);
+}
