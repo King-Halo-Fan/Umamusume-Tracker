@@ -199,6 +199,9 @@ function initApp() {
     document.getElementById("chars-view").style.display="block";
     document.getElementById("detail-view").style.display="none";
     document.getElementById("pin-input").value="";
+    document.getElementById("pin-error").style.display="none";
+    const btn=document.getElementById("pin-btn");
+    btn.disabled=false;btn.textContent="Load / create save";
     document.getElementById("pin-screen").style.display="block";
   });
   document.getElementById("search-input").addEventListener("input",e=>{charSearch=e.target.value;renderGrid();});
