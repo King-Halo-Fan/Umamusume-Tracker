@@ -66,7 +66,7 @@ Umamusume Tracker is a fan-made web app for tracking your progress in *Umamusume
 
 Here's what makes it useful:
 * Track which characters you own, their story events, epitapths, and race data all in one place
-* Save your progress to the cloud using a simple PIN — no account needed
+* Save your progress to the cloud using a simple PIN — no account needed. If youre using this without making your own repository, please be respectful of other peoples saves if a PIN has already been used.
 * Support for costume alternates so your tracker reflects your preferred outfits
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
