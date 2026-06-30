@@ -1,49 +1,49 @@
-name,color,text,alt1_label,alt1_color,alt1_text
-Special Week,#B5D4F4,#0C447C
+name,color,text,alt1_label,alt1_color,alt1_text,alt2_label,alt2_color,alt2_text
+Special Week,#B5D4F4,#0C447C, Hopp'n Happy Heart,#9BE8E0,#FF6F5E, Ruler of Japan
 Silence Suzuka,#F4C0D1,#72243E
-Tokai Teio,#CED0FF,#3C3489,Beyond the Horizon
+Tokai Teio,#CED0FF,#3C3489, Beyond the Horizon
 Maruzensky,#F5C4B3,#712B13, Hot Summer Night
 Oguri Cap,#FAC775,#633806, Ashen Miracle
 Gold Ship,#D3D1C7,#444441
 Vodka,#F5C4B3,#712B13
 Daiwa Scarlet,#F7C1C1,#791F1F
-Taiki Shuttle,#c8feda,#8bf41b
+Taiki Shuttle,#c8feda,#8bf41b, Taiki Shuttle
 Grass Wonder,#9FE1CB,#085041, Saintly Jade Cleric
 Mejiro McQueen,#C0DD97,#3B6D11, End of the Skies
 El Condor Pasa,#C0DD97,#3B6D11, Kukulkan Warrior
-Symboli Rudolf,#D3D1C7,#444441
-Air Groove,#C0DD97,#3B6D11
-Mayano Top Gun,#FAC775,#633806, Sunlight Bouqet
+Symboli Rudolf,#D3D1C7,#444441, Archer by Moonlight
+Air Groove,#C0DD97,#3B6D11, Quercus Civilis
+Mayano Top Gun,#FAC775,#633806, Sunlight Bouquet
 Mejiro Ryan,#5ebabf,#8389e3
 Rice Shower,#F4C0D1,#72243E,Vampire Makeover
 Agnes Tachyon,#F7C1C1,#791F1F
 Winning Ticket,#FAC775,#633806
 Sakura Bakushin O,#e96dbe,#a06a76
-Super Creek,#9FE1CB,#085041
+Super Creek,#9FE1CB,#085041, Chiffon-Wrapped Mummy
 Haru Urara,#F5C4B3,#712B13, New Year New Urara
-Matikanefukukitaru,#B5D4F4,#0C447C
-Nice Nature,#943526,#7887a0,Run and Win
-King Halo,#F4C0D1,#72243E
-T.M. Opera O,#FAC775,#633806
+Matikanefukukitaru,#B5D4F4,#0C447C, Lucky Tidings
+Nice Nature,#943526,#7887a0, Run and Win
+King Halo,#F4C0D1,#72243E, Cheerleader in Noble White
+T.M. Opera O,#FAC775,#633806, New Year Same Radiance
 Mihono Bourbon,#B5D4F4,#0C447C, Code Icing
-Biwa Hayahide,#CED0FF,#3C3489
-Curren Chan,#F4C0D1,#72243E
+Biwa Hayahide,#CED0FF,#3C3489, Rouge Caroler
+Curren Chan,#F4C0D1,#72243E, Ma Cherie of the New Moon
 Narita Taishin,#D3D1C7,#444441
 Smart Falcon,#9FE1CB,#085041
 Narita Brian,#F7C1C1,#791F1F
-Seiun Sky,#B5D4F4,#0C447C
+Seiun Sky,#B5D4F4,#0C447C, Soiree des Chatons
 Hishi Amazon,#F5C4B3,#712B13
-Fuji Kiseki,#9FE1CB,#085041
-Gold City,#C0DD97,#3B6D11
+Fuji Kiseki,#9FE1CB,#085041, Succes Etoile
+Gold City,#C0DD97,#3B6D11, Autumn Cosmos
 Meisho Doto,#B5D4F4,#0C447C
-Eishin Flash,#FAC775,#633806
+Eishin Flash,#FAC775,#633806, Precise Chocolatier
 Hishi Akebono,#9FE1CB,#085041
 Agnes Digital,#B5D4F4,#0C447C
 Kawakami Princess,#F4C0D1,#72243E
 Manhattan Cafe,#CED0FF,#3C3489
 Tosen Jordan,#FAC775,#633806
-Mejiro Dober,#F5C4B3,#712B13
-Fine Motion,#CED0FF,#3C3489,
+Mejiro Dober,#F5C4B3,#712B13, Sapphire Sojourn
+Fine Motion,#CED0FF,#3C3489, Titania
 Tamamo Cross,#F7C1C1,#791F1F
 Sakura Chiyono O,#F4C0D1,#72243E
 Mejiro Ardan,#F7C1C1,#791F1F
@@ -58,3 +58,4 @@ Ines Fujin,#D6EED6,#1A6B3A
 Mejiro Palmer,#FFF3C0,#3B6D11
 Inari One,#F5E6C8,#8B2000
 Sweep Tosho,#2D1A4A,#C8A8F0
+Air Shakur,#1F1B2E,#B6FF6B
