@@ -275,7 +275,7 @@ function renderGrid(){
     return `<div class="char-card ${d.owned?'owned':''}" data-name="${c.name}" tabindex="0"${isCustom?' draggable="true"':''}>
       <div class="char-header">
          ${avatarHTML(c, 36, true)}
-        <div><div class="char-name">${c.name}</div><div class="char-wins">${w} win${w!==1?'s':''} logged</div></div>
+        <div><div class="char-name${c.name.length>14?' char-name-long':''}${c.name.length>18?' char-name-xlong':''}">${c.name}</div><div class="char-wins">${w} win${w!==1?'s':''} logged</div></div>
       </div>
       <button class="own-toggle" data-own="${c.name}">${d.owned?'✓ Owned':'Mark as owned'}</button>
     </div>`;
