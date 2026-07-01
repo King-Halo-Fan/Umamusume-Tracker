@@ -86,18 +86,22 @@ async function loadCSV(path) {
 
 // ── Bootstrap: load all CSVs before showing anything ─────────────────────────
 let CHARS = [], G1_RACES = [], TITLES = [], STORY_EVENTS = {};
+let RACE_ORDER_INDEX = {};
 
 async function bootstrap() {
   try {
-    const [chars, races, titlesData, storyData] = await Promise.all([
+  const [chars, races, titlesData, storyData, raceOrderData] = await Promise.all([
       loadCSV("ImportFile/characters.csv"),
       loadCSV("ImportFile/races.csv"),
       loadCSV("ImportFile/titles.csv"),
       loadCSV("ImportFile/story_events.csv").catch(() => []),
+      loadCSV("ImportFile/race_order.csv").catch(() => []),
     ]);
     CHARS    = chars;
     G1_RACES = races;
     TITLES   = titlesData.map(r => ({ title: r.title, description: r.description || "" }));
+    RACE_ORDER_INDEX = {};
+    raceOrderData.forEach((r, i) => { if (r.name) RACE_ORDER_INDEX[r.name] = i; });
     // Separate universal (ALL) events from character-specific ones
     const universalEvents = storyData
       .filter(row => row.character === "ALL" && row.event)
@@ -149,6 +153,7 @@ async function dbSave(h, data) {
 let pinHash=null, appData={}, currentChar=null, charSearch="", saveTimer=null;
 let fSearch="", fGrade=null, fYear=null, fMonth=null, fSurface=null, fLength=null;
 let racesCollapsed=false, titlesCollapsed=false, storyCollapsed=false;
+let raceViewMode="career";
 
 function initChar(n){
   if(!appData[n])appData[n]={owned:false,races:{},titles:{},storyEvents:{}};
@@ -369,6 +374,7 @@ function hasActiveFilter(){
 }
 function renderFilters(){
   const wrap=document.getElementById("d-filters");
+  if(raceViewMode==="trophy"){ wrap.innerHTML=""; return; }
   const chipRow=(label,options,current)=>`
     <div class="filter-row">
       <span class="filter-label">${label}</span>
@@ -415,6 +421,7 @@ function showDetail(name){
   currentChar=name;initChar(name);
   fSearch="";fGrade=null;fYear=null;fMonth=null;fSurface=null;fLength=null;
   racesCollapsed=false;titlesCollapsed=false;storyCollapsed=false;
+  raceViewMode="career";
   document.getElementById("chars-view").style.display="none";
   document.getElementById("detail-view").style.display="block";
   const c=CHARS.find(x=>x.name===name);
@@ -454,11 +461,61 @@ function tagHTML(r){
          <span class="tag tag-surface-${r.surface}">${r.surface}</span>
          <span class="tag tag-length">${r.length}</span>`;
 }
+function trophyRoomGroups(){
+  const withIdx = G1_RACES.map((r, origIdx) => ({
+    r,
+    idx: RACE_ORDER_INDEX.hasOwnProperty(r.name) ? RACE_ORDER_INDEX[r.name] : (100000 + origIdx)
+  }));
+  withIdx.sort((a,b)=>a.idx-b.idx);
+  const ordered = withIdx.map(x=>x.r);
+  const groups = {};
+  ordered.forEach(r=>{ (groups[r.grade] = groups[r.grade] || []).push(r); });
+  return GRADES.filter(g=>groups[g] && groups[g].length).map(g=>({grade:g, races:groups[g]}));
+}
+function trophyCardHTML(r, d){
+  const won = !!d.races[r.name];
+  return `<div class="race-card ${won?'won':''}" data-trophy-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${won}">
+    ${won?'<div class="race-card-check">✓</div>':''}
+    <div class="race-card-name">${r.name}</div>
+    <div class="race-card-tags">
+      <span class="tag tag-year-${r.year}">${r.year}</span>
+      <span class="tag tag-month">${r.month}</span>
+      <span class="tag tag-surface-${r.surface}">${r.surface}</span>
+      <span class="tag tag-length">${r.length}</span>
+    </div>
+  </div>`;
+}
+function renderTrophyRoomHTML(d){
+  const groups = trophyRoomGroups();
+  if(!groups.length) return `<div class="no-results">No races found. Check <code>ImportFile/races.csv</code>.</div>`;
+  return groups.map(({grade,races})=>{
+    const wonCount = races.filter(r=>d.races[r.name]).length;
+    const blocks=[];
+    for(let i=0;i<races.length;i+=15) blocks.push(races.slice(i,i+15));
+    return `<div class="race-year-heading">
+        <span class="tag tag-grade-${grade}" style="font-size:12px;padding:4px 12px;">${grade}</span>
+        <span class="race-year-count">${wonCount} / ${races.length} won</span>
+      </div>
+      ${blocks.map(block=>`<div class="race-grid">${block.map(r=>trophyCardHTML(r,d)).join("")}</div>`).join("")}`;
+  }).join("");
+}
+function renderCareerListHTML(d){
+  const races=filteredRaces();
+  return races.length===0
+    ?`<div class="no-results">No races match your filters.</div>`
+    :`<div class="race-list">${races.map(r=>`
+        <div class="race-row">
+          <span class="race-name">${r.name}</span>
+          <div class="race-tags">${tagHTML(r)}</div>
+          <div class="race-check ${d.races[r.name]?'won':''}" data-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r.name]}">${d.races[r.name]?'✓':''}</div>
+        </div>`).join("")}
+      </div>`;
+}
 function renderDetailRaces(c){
   const d=appData[c.name];
-  const races=filteredRaces();
   const totalWon=Object.values(d.races||{}).filter(Boolean).length;
   const pct=Math.round(totalWon/G1_RACES.length*100);
+  const bodyContent = raceViewMode==="trophy" ? renderTrophyRoomHTML(d) : renderCareerListHTML(d);
   document.getElementById("d-races-section").innerHTML=`
     <div class="section-title">
       <span>Wins — ${totalWon} / ${G1_RACES.length} total</span>
@@ -469,29 +526,41 @@ function renderDetailRaces(c){
     </div>
     <div id="races-body" ${racesCollapsed?'style="display:none"':''}>
       <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
-      ${races.length===0
-        ?`<div class="no-results">No races match your filters.</div>`
-        :`<div class="race-list">${races.map(r=>`
-            <div class="race-row">
-              <span class="race-name">${r.name}</span>
-              <div class="race-tags">${tagHTML(r)}</div>
-              <div class="race-check ${d.races[r.name]?'won':''}" data-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${!!d.races[r.name]}">${d.races[r.name]?'✓':''}</div>
-            </div>`).join("")}
-          </div>`
-      }
+      <div class="race-map-toggle-row">
+        <button class="race-map-btn ${raceViewMode==='career'?'active':''}" id="career-view-btn">☰ Career view</button>
+        <button class="race-map-btn ${raceViewMode==='trophy'?'active':''}" id="trophy-room-btn">🏆 Trophy room</button>
+      </div>
+      ${bodyContent}
     </div>`;
   document.getElementById("races-collapse-btn").addEventListener("click",()=>{
     racesCollapsed=!racesCollapsed;
     renderDetailRaces(c);
   });
-  document.querySelectorAll("[data-race]").forEach(el=>{
-    const go=()=>{
-      d.races[el.dataset.race]=!d.races[el.dataset.race];
-      scheduleSave();renderDetailHeader(c);renderDetailRaces(c);
-    };
-    el.addEventListener("click",go);
-    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
+  document.getElementById("career-view-btn").addEventListener("click",()=>{
+    raceViewMode="career";renderFilters();renderDetailRaces(c);
   });
+  document.getElementById("trophy-room-btn").addEventListener("click",()=>{
+    raceViewMode="trophy";renderFilters();renderDetailRaces(c);
+  });
+  if(raceViewMode==="career"){
+    document.querySelectorAll("[data-race]").forEach(el=>{
+      const go=()=>{
+        d.races[el.dataset.race]=!d.races[el.dataset.race];
+        scheduleSave();renderDetailHeader(c);renderDetailRaces(c);
+      };
+      el.addEventListener("click",go);
+      el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
+    });
+  } else {
+    document.querySelectorAll("[data-trophy-race]").forEach(el=>{
+      const go=()=>{
+        d.races[el.dataset.trophyRace]=!d.races[el.dataset.trophyRace];
+        scheduleSave();renderDetailHeader(c);renderDetailRaces(c);
+      };
+      el.addEventListener("click",go);
+      el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ")go();});
+    });
+  }
 }
 function renderDetailTitles(c){
   const d=appData[c.name];
