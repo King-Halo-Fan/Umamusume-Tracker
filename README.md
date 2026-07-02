@@ -158,7 +158,7 @@ Set your PIN from the website to sync your progress to Supabase. If saves stop w
 - [ ] complete story event tracking per character
 - [x] Universal (`ALL`) story events
 - [x] PIN-based cloud save via Supabase
-- [ ] Costume alternate / skin swapping for all outfits
+- [x] Costume alternate / skin swapping for all outfits
 
 
 See the [open issues](https://github.com/King-Halo-Fan/Umamusume-Tracker/issues) for a full list of proposed features and known bugs.
