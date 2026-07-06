@@ -88,7 +88,7 @@ Here's what makes it useful:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-No build step required. Just clone the repo and open `index.html`.
+No build steps required. Just clone the repo and open `index.html`.
 
 ### Prerequisites
 
