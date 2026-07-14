@@ -13,6 +13,7 @@ Tokyo Sports Hai Junior Stakes,G3,Junior,Late Nov,Turf,Mile
 Asahi Hai Futurity Stakes,G1,Junior,Early Dec,Turf,Mile
 Hanshin Juvenile Fillies,G1,Junior,Early Dec,Turf,Mile
 Hopeful Stakes,G1,Junior,Late Dec,Turf,Medium
+Zen-Nippon Junior Yushun,G1,Junior,Late Dec,Dirt,Mile
 Fairy Stakes,G3,Classic,Early Jan,Turf,Mile
 Keisei Hai,G3,Classic,Early Jan,Turf,Medium
 Shinzan Kinen,G3,Classic,Early Jan,Turf,Mile
@@ -30,13 +31,16 @@ Arlington Cup,G3,Classic,Early Apr,Turf,Mile
 New Zealand Trophy,G2,Classic,Early Apr,Turf,Mile
 Oka Sho,G1,Classic,Early Apr,Turf,Mile
 Satsuki Sho,G1,Classic,Early Apr,Turf,Medium
+Marine Cup,G3,Classic,Early Apr,Dirt,Mile
 Aoba Sho,G2,Classic,Late Apr,Turf,Medium
 Flora Stakes,G2,Classic,Late Apr,Turf,Medium
+Tokyo Sprint,G3,Classic,Late Apr,Dirt,Sprint
 Kyoto Shimbun Hai,G2,Classic,Early May,Turf,Medium
 NHK Mile Cup,G1,Classic,Early May,Turf,Mile
 Aoi Stakes,G3,Classic,Late May,Turf,Sprint
 Japanese Oaks,G1,Classic,Late May,Turf,Medium
 Japanese Derby,G1,Classic,Late May,Turf,Medium
+Kanto Oaks,G2,Classic,Early Jun,Dirt,Medium
 Epsom Cup,G3,Classic,Early Jun,Turf,Mile
 Mermaid Stakes,G3,Classic,Early Jun,Turf,Medium
 Naruo Kinen,G3,Classic,Early Jun,Turf,Medium
@@ -50,9 +54,11 @@ Japan Dirt Derby,G1,Classic,Early Jul,Dirt,Medium
 Procyon Stakes,G3,Classic,Early Jul,Dirt,Sprint
 Radio Nikkei Sho,G3,Classic,Early Jul,Turf,Mile
 Tanabata Sho,G3,Classic,Early Jul,Turf,Medium
+Sparkling Lady Cup,G3,Classic,Early Jul,Dirt,Mile
 Chukyo Kinen,G3,Classic,Late Jul,Turf,Mile
 Ibis Summer Dash,G3,Classic,Late Jul,Turf,Sprint
 Queen Stakes,G3,Classic,Late Jul,Turf,Mile
+Mercury Cup,G3,Classic,Late Jul,Dirt,Medium
 Elm Stakes,G3,Classic,Early Aug,Dirt,Mile
 Kokura Kinen,G3,Classic,Early Aug,Turf,Medium
 Leopard Stakes,G3,Classic,Early Aug,Dirt,Mile
@@ -60,6 +66,7 @@ Sekiya Kinen,G3,Classic,Early Aug,Turf,Mile
 Keeneland Cup,G3,Classic,Late Aug,Turf,Sprint
 Kitakyushu Kinen,G3,Classic,Late Aug,Turf,Sprint
 Sapporo Kinen,G2,Classic,Late Aug,Turf,Medium
+C;uster Cup,G3,Classic,Late Aug,Dirt,Sprint
 Centaur Stakes,G2,Classic,Early Sep,Turf,Sprint
 Keisei Hai Autumn Handicap,G3,Classic,Early Sep,Turf,Mile
 Niigata Kinen,G3,Classic,Early Sep,Turf,Medium
@@ -67,13 +74,17 @@ Rose Stakes,G2,Classic,Early Sep,Turf,Mile
 Shion Stakes,G3,Classic,Early Sep,Turf,Medium
 All Comers,G2,Classic,Late Sep,Turf,Medium
 Kobe Shimbun Hai,G2,Classic,Late Sep,Turf,Medium
+Sazanka TV Hai,G2,Classic,Late Sep,Dirt,Mile
 Sirius Stakes,G3,Classic,Late Sep,Dirt,Medium
 Sprinters Stakes,G1,Classic,Late Sep,Turf,Sprint
 St. Lite Kinen,G2,Classic,Late Sep,Turf,Medium
+Mile Championship Nambu Hai,G1,Classic,Early Oct,Dirt,Mile
 Fuchu Umamusume Stakes,G2,Classic,Early Oct,Turf,Mile
 Kyoto Daishoten,G2,Classic,Early Oct,Turf,Medium
 Mainichi Okan,G2,Classic,Early Oct,Turf,Mile
 Fuji Stakes,G2,Classic,Early Oct,Turf,Mile
+Ladies Prelude,G2,Classic,Early Oct,Dirt,Mile
+Tokyo Hai,G2,Classic,Early Oct,Dirt,Sprint
 Kikuka Sho,G1,Classic,Late Oct,Turf,Long
 Shuka Sho,G1,Classic,Late Oct,Turf,Medium
 Swan Stakes,G2,Classic,Late Oct,Turf,Sprint
@@ -95,6 +106,7 @@ Champions Cup,G1,Classic,Early Dec,Dirt,Mile
 Chunichi Shimbun Hai,G3,Classic,Early Dec,Turf,Medium
 Stayers Stakes,G2,Classic,Early Dec,Turf,Long
 Turquoise Stakes,G3,Classic,Early Dec,Turf,Mile
+Queen Sho,G3,Classic,Early Dec,Dirt,Mile
 Arima Kinen,G1,Classic,Late Dec,Turf,Long
 Hanshin Cup,G2,Classic,Late Dec,Turf,Sprint
 Tokyo Daishoten,G1,Classic,Late Dec,Dirt,Medium
@@ -106,6 +118,8 @@ American JCC,G2,Senior,Late Jan,Turf,Medium
 Negishi Stakes,G3,Senior,Late Jan,Dirt,Sprint
 Silk Road Stakes,G3,Senior,Late Jan,Turf,Sprint
 Tokai Stakes,G2,Senior,Late Jan,Dirt,Mile
+TCK Queen Hai,G3,Senior,Late Jan,Dirt,Mile
+Kawasaki Kinen,G1,Senior,Early Feb,Dirt,Medium
 Kyoto Kinen,G2,Senior,Early Feb,Turf,Medium
 Tokyo Shimbun Hai,G3,Senior,Early Feb,Turf,Mile
 Diamond Stakes,G3,Senior,Late Feb,Turf,Long
@@ -115,9 +129,11 @@ Kokura Daishoten,G3,Senior,Late Feb,Turf,Mile
 Kyoto Umamusume Stakes,G3,Senior,Late Feb,Turf,Sprint
 Nakayama Kinen,G2,Senior,Late Feb,Turf,Mile
 Kinko Sho,G2,Senior,Early Mar,Turf,Medium
+Empress Hai,G2,Senior,Early Mar,Dirt,Medium
 Nakayama Umamusume Stakes,G3,Senior,Early Mar,Turf,Mile
 Ocean Stakes,G3,Senior,Early Mar,Turf,Sprint
 Hanshin Daishoten,G2,Senior,Late Mar,Turf,Long
+Diolite Kinen,G2,Senior,Late Mar,Dirt,Medium
 March Stakes,G3,Senior,Late Mar,Dirt,Mile
 Nikkei Sho,G2,Senior,Late Mar,Turf,Long
 Osaka Hai,G1,Senior,Late Mar,Turf,Medium
@@ -128,6 +144,7 @@ Lord Derby Challenge Trophy,G3,Senior,Early Apr,Turf,Mile
 Fukushima Umamusume Stakes,G3,Senior,Late Apr,Turf,Mile
 Milers Cup,G2,Senior,Late Apr,Turf,Mile
 Tenno Sho (Spring),G1,Senior,Late Apr,Turf,Long
+Kashiwa Kinen,G1,Senior,Early May,Dirt,Mile
 Keio Hai Spring Cup,G2,Senior,Early May,Turf,Sprint
 Niigata Daishoten,G3,Senior,Early May,Turf,Medium
 Victoria Mile,G1,Senior,Early May,Turf,Mile
