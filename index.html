@@ -77,7 +77,9 @@ function parseCSV(text) {
     return obj;
   });
 }
-
+function raceYears(r) {
+  return (r.year || "").split(",").map(s => s.trim()).filter(Boolean);
+}
 async function loadCSV(path) {
   const r = await fetch(path);
   if (!r.ok) throw new Error(`Failed to load ${path}`);
@@ -360,7 +362,7 @@ function filteredRaces(){
   const d = appData[currentChar] || {};
   return G1_RACES.filter(r=>{
     if(fGrade   && r.grade   !==fGrade)   return false;
-    if(fYear    && r.year    !==fYear)    return false;
+    if(fYear    && !raceYears(r).includes(fYear)) return false;
     if(fMonth   && r.month   !==fMonth)   return false;
     if(fSurface && r.surface !==fSurface) return false;
     if(fLength  && r.length  !==fLength)  return false;
@@ -456,7 +458,7 @@ function renderDetailHeader(c){
 }
 function tagHTML(r){
   return`<span class="tag tag-grade-${r.grade}">${r.grade}</span>
-         <span class="tag tag-year-${r.year}">${r.year}</span>
+         ${raceYears(r).map(y=>`<span class="tag tag-year-${y}">${y}</span>`).join("")}
          <span class="tag tag-month">${r.month}</span>
          <span class="tag tag-surface-${r.surface}">${r.surface}</span>
          <span class="tag tag-length">${r.length}</span>`;
@@ -477,12 +479,12 @@ function trophyCardHTML(r, d){
   return `<div class="race-card ${won?'won':''}" data-trophy-race="${r.name}" tabindex="0" role="checkbox" aria-checked="${won}">
     ${won?'<div class="race-card-check">✓</div>':''}
     <div class="race-card-name">${r.name}</div>
-    <div class="race-card-tags">
-      <span class="tag tag-year-${r.year}">${r.year}</span>
-      <span class="tag tag-month">${r.month}</span>
-      <span class="tag tag-surface-${r.surface}">${r.surface}</span>
-      <span class="tag tag-length">${r.length}</span>
-    </div>
+<div class="race-card-tags">
+  ${raceYears(r).map(y=>`<span class="tag tag-year-${y}">${y}</span>`).join("")}
+  <span class="tag tag-month">${r.month}</span>
+  <span class="tag tag-surface-${r.surface}">${r.surface}</span>
+  <span class="tag tag-length">${r.length}</span>
+</div>
   </div>`;
 }
 function renderTrophyRoomHTML(d){
